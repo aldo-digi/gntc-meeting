@@ -2,10 +2,15 @@ import {Scheduler} from "@aldabil/react-scheduler";
 import {Form} from "../Components/form";
 import {Button, Container} from "@mui/material";
 import {SideBar} from "../Components/sideBar";
-import {useState} from "react";
+import {useEffect, useState} from "react";
+
+import { useClient } from '../Components/ClientContext';
 
 export const Calendar = () => {
     const [open, setOpen] = useState(false);
+
+
+
 
     return (
         <>
@@ -13,7 +18,7 @@ export const Calendar = () => {
             <Button onClick={()=>setOpen(true)}>Open drawer</Button>
             <SideBar open={open} setOpen={setOpen}/>
         <Container>
-            <h1>Gorenje Calendar</h1>
+            <h1>Gorenje kalendari</h1>
             <Scheduler
                 customEditor={(scheduler) => <Form scheduler={scheduler}/> }
                 view="week"

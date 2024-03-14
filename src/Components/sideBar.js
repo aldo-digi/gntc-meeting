@@ -38,41 +38,41 @@ export const SideBar = ({open, setOpen }) => {
             <Box sx={{ width: isMobile ? '100%' : 250 }} role="presentation" onClick={toggleDrawer(false)} onKeyDown={toggleDrawer(false)}>
                 <List>
                     <ListItem
-                        key='Kalendria'
+                        key='kalendari '
                         sx={{
                             mb:2,
                             borderRadius: 20,
                             '&:hover': {
                                 backgroundColor: '#FFEE0D',
                             },
-                            backgroundColor: activeItem === 'kalendria' ? '#FFEE0D' : 'inherit',
+                            backgroundColor: activeItem === 'kalendari ' ? '#FFEE0D' : 'inherit',
                         }}
                         disablePadding
                     >
-                        <ListItemButton onClick={() => handleItemClick('Kalendria')}>
+                        <ListItemButton onClick={() => handleItemClick('Kalendari ')}>
                             <ListItemIcon>
                                 <CalendarMonthIcon />
                             </ListItemIcon>
-                            <ListItemText primary='Kalendria' />
+                            <ListItemText primary='Kalendari ' />
                         </ListItemButton>
                     </ListItem>
                     <ListItem
-                        key='Staff'
+                        key='Clients'
                         sx={{
                             mb:2,
                             borderRadius: 20,
                             '&:hover': {
                                 backgroundColor: '#FFEE0D',
                             },
-                            backgroundColor: activeItem === 'staff' ? '#FFEE0D' : 'inherit',
+                            backgroundColor: activeItem === 'Clients' ? '#FFEE0D' : 'inherit',
                         }}
                         disablePadding
                     >
-                        <ListItemButton onClick={() => handleItemClick('Staff')}>
+                        <ListItemButton onClick={() => handleItemClick('Clients')}>
                             <ListItemIcon>
                                 <PeopleAltIcon />
                             </ListItemIcon>
-                            <ListItemText primary='Staff' />
+                            <ListItemText primary='Clients' />
                         </ListItemButton>
                     </ListItem>
                 </List>

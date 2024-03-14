@@ -1,8 +1,16 @@
 import {Autocomplete, Button, FormControl, InputLabel, MenuItem, Select, TextField} from "@mui/material";
-import {useState} from "react";
+import {useState, useEffect} from "react";
 import ShortUniqueId from "short-unique-id";
+import { useClient } from "./ClientContext";
 
 export const Form = ({scheduler}) => {
+
+    const { clients, updateClients } = useClient();
+    const [users, setUsers] = useState([]);
+    useEffect(() => {
+        setUsers(clients);
+        console.log(clients);
+    }, []);
 
     const event = scheduler.edited;
 
@@ -15,6 +23,7 @@ export const Form = ({scheduler}) => {
 
     const handleChange = (event) => {
         setFormData({...formData, [event.target.name]: event.target.value});
+        console.log(formData);
     }
 
     const date = new Date(scheduler.state.start.value );
@@ -31,11 +40,11 @@ export const Form = ({scheduler}) => {
     const minutes = String(localDate.getMinutes()).padStart(2, '0');
     const formattedDate = `${year}-${month}-${day}T${hours}:${minutes}`;
 
-    const users = [
-        {email: 'hello@mail.com'},
-        {email: 'hello1@mail.com'},
-        {email: 'hello2@mail.com'},
-    ]
+    // const users = [
+    //     {email: 'hello@mail.com'},
+    //     {email: 'hello1@mail.com'},
+    //     {email: 'hello2@mail.com'},
+    // ]
 
     return (
         <form style={{
@@ -62,19 +71,20 @@ export const Form = ({scheduler}) => {
                 />
             </FormControl>
             <TextField
-                label="Start"
-                type="datetime-local"
+                label="Date"
+                type="date"
                 name="start"
                 value={formData.start}
                 onChange={handleChange}
             />
             <TextField
-                label="End"
-                type="datetime-local"
+                label="Time"
+                type="time"
                 name="end"
                 value={formData.end}
                 onChange={handleChange}
             />
+
             <div style={{
                 display: 'flex',
                 justifyContent: 'flex-end',

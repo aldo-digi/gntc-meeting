@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import {useState, useContext} from 'react';
 import {
     Container,
     TableContainer,
@@ -23,6 +23,10 @@ import AddIcon from '@mui/icons-material/Add';
 import axios from 'axios';
 import {SideBar} from "../Components/sideBar"; // Import axios for HTTP requests
 
+import { useClient } from '../Components/ClientContext';
+
+
+
 const Staff = () => {
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(15);
@@ -30,8 +34,8 @@ const Staff = () => {
     const [rows, setRows] = useState([
         {
             id: 1,
-            firstName: 'John',
-            lastName: 'Doe',
+            name: 'John Doe',
+            company: 'GNTC',
             city: 'New York',
             gender: 'Male',
             email: 'john@example.com',
@@ -39,8 +43,8 @@ const Staff = () => {
         },
         {
             id: 2,
-            firstName: 'Jane',
-            lastName: 'Smith',
+            name: 'Jane Smith',
+            company: 'GNTC',
             city: 'Los Angeles',
             gender: 'Female',
             email: 'jane@example.com',
@@ -49,14 +53,26 @@ const Staff = () => {
         // Add more rows as needed
     ]);
 
+    //client Context
+    const { clients, updateClients, deleteClients } = useClient();
+
+    const handleDeleteClient = (index) => {
+        // Create a copy of the clients array
+        const remaianingClients = [...clients];
+        // Remove the client at the specified index
+        remaianingClients.splice(index, 1);
+        console.log(remaianingClients)
+        // Update the clients array in the context
+        deleteClients(index);
+    };
+
     // State for managing form dialog
     const [open, setOpen] = useState(false);
     const [openForm, setOpenForm] = useState(false);
     const [formData, setFormData] = useState({
-        firstName: '',
-        lastName: '',
+        name: '',
+        company: '',
         city: '',
-        gender: '',
         email: '',
         position: '', // No default position
     });
@@ -85,6 +101,8 @@ const Staff = () => {
 
     const handleFormSubmit = async () => {
         try {
+            updateClients(formData);
+
             // Send POST request to add client
             // const response = await axios.post('/api/clients', formData);
             // const newClient = response.data;
@@ -97,9 +115,9 @@ const Staff = () => {
 
     const positions = ['Manager', 'Staff', 'Other']; // Available positions
 
-    const filteredRows = rows.filter(row =>
-        row.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        row.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    const filteredRows = clients.filter(row =>
+        row.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        row.company.toLowerCase().includes(searchTerm.toLowerCase()) ||
         row.email.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
@@ -113,7 +131,7 @@ const Staff = () => {
                     justifyContent: 'space-between',
                     alignItems: 'center',
                 }}>
-                    <h1>Staff</h1>
+                    <h1>Clients</h1>
                     <div style={{
                         display: 'flex',
                         gap: 20,
@@ -149,25 +167,29 @@ const Staff = () => {
                         <TableHead>
                             <TableRow>
                                 <TableCell>Client ID</TableCell>
-                                <TableCell>First Name</TableCell>
-                                <TableCell>Last Name</TableCell>
+                                <TableCell>Name</TableCell>
+                                <TableCell>Company</TableCell>
                                 <TableCell>City</TableCell>
-                                <TableCell>Gender</TableCell>
                                 <TableCell>Email</TableCell>
-                                <TableCell>Position</TableCell> {/* Added Position column */}
+                                <TableCell>Position</TableCell>
+                                <TableCell>Actions</TableCell> {/* Added Position column */}
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {filteredRows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(row => (
-                                <TableRow key={row.id}>
-                                    <TableCell>{row.id}</TableCell>
-                                    <TableCell>{row.firstName}</TableCell>
-                                    <TableCell>{row.lastName}</TableCell>
-                                    <TableCell>{row.city}</TableCell>
-                                    <TableCell>{row.gender}</TableCell>
-                                    <TableCell>{row.email}</TableCell>
-                                    <TableCell>{row.position}</TableCell> {/* Added Position cell */}
-                                </TableRow>
+                            {filteredRows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => (
+                                <TableRow key={index}>
+                                <TableCell>{index+1}</TableCell>
+                                <TableCell>{row.name}</TableCell>
+                                <TableCell>{row.company}</TableCell>
+                                <TableCell>{row.city}</TableCell>
+                                <TableCell>{row.email}</TableCell>
+                                <TableCell>{row.position}</TableCell>
+                                <TableCell>
+                                    <Button variant="outlined" color="primary" >Edit</Button>
+                                    <Button variant="outlined" color="secondary" style={{ marginLeft: '8px' }} onClick={() => handleDeleteClient(index)}>Delete</Button>
+                                </TableCell>
+                            </TableRow>
+                            
                             ))}
                         </TableBody>
                     </Table>
@@ -187,18 +209,18 @@ const Staff = () => {
                     <DialogContent>
                         <TextField
                             margin="dense"
-                            label="First Name"
+                            label="Name"
                             fullWidth
-                            name="firstName"
-                            value={formData.firstName}
+                            name="name"
+                            value={formData.name}
                             onChange={handleInputChange}
                         />
                         <TextField
                             margin="dense"
-                            label="Last Name"
+                            label="Company"
                             fullWidth
-                            name="lastName"
-                            value={formData.lastName}
+                            name="company"
+                            value={formData.company}
                             onChange={handleInputChange}
                         />
                         <TextField
@@ -209,25 +231,6 @@ const Staff = () => {
                             value={formData.city}
                             onChange={handleInputChange}
                         />
-                        <FormControl fullWidth sx={{
-                            mt: 1,
-                            mb: 1
-                        }}>
-                            <InputLabel id="gender">Gender</InputLabel>
-                            <Select
-                                margin="dense"
-                                label="Gender"
-                                fullWidth
-                                name="gender"
-                                value={formData.gender}
-                                onChange={handleInputChange}
-                            >
-                                <MenuItem value="Male">Male</MenuItem>
-                                <MenuItem value="Female">Female</MenuItem>
-                            </Select>
-                        </FormControl>
-
-
                         <FormControl fullWidth sx={{
                             mt: 1,
                             mb: 1

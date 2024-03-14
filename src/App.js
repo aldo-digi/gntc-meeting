@@ -8,24 +8,27 @@ import {Calendar} from "./Pages/calendar";
 import Staff from "./Pages/staff";
 import {createBrowserRouter, RouterProvider, useNavigate} from "react-router-dom";
 
+import { ClientProvider } from './Components/ClientContext';
+
 function App() {
 
     const router = createBrowserRouter([
         {
-            path: '/Kalendria',
+            path: '/kalendari ',
             element: <Calendar />
         },
         {
-            path: '/staff',
+            path: '/clients',
             element: <Staff />
         }
     ])
 
     return (
-        <>
-            <RouterProvider router={router}>
-            </RouterProvider>
-        </>
+        <ClientProvider> {/* Wrap your entire application with the ClientProvider */}
+            <>
+            <RouterProvider router={router}></RouterProvider>
+            </>
+        </ClientProvider>
     );
 }
 
