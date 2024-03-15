@@ -19,7 +19,7 @@ export const Calendar = () => {
         }
     };
     useEffect(() => {
-        checkUserAuthentication();
+        // checkUserAuthentication();
     }, []);
     
     const [open, setOpen] = useState(false);

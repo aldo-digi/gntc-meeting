@@ -43,8 +43,8 @@ const Staff = () => {
         }
     };
     useEffect(() => {
-        checkUserAuthentication();
-        checkUserRole();
+        // checkUserAuthentication();
+        // checkUserRole();
     }, []);
 
     const [page, setPage] = useState(0);
