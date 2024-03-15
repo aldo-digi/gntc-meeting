@@ -21,6 +21,8 @@ export const SideBar = ({open, setOpen }) => {
         navigate(`/${itemName.toLowerCase()}`)
     };
 
+    const userRole = localStorage.getItem('gntcuserrole')
+
     useEffect(() => {
         setActiveItem(path.split('/')[1] || 'kalendria');
     }, [path]);

@@ -1,4 +1,6 @@
 import {useState, useContext, useEffect} from 'react';
+import {useNavigate} from "react-router-dom";
+
 import {
     Container,
     TableContainer,
@@ -25,6 +27,26 @@ import { useClient } from '../Components/ClientContext';
 
 
 const Staff = () => {
+
+    const navigate = useNavigate()
+
+    const checkUserAuthentication = () => {
+        const user = localStorage.getItem('gntcuser');
+        if (!user) {
+            navigate('/login');
+        }
+    };
+    const checkUserRole = () => {
+        const user = localStorage.getItem('gntcuserrole');
+        if (user !== 'editor') {
+            navigate('/kalendari');
+        }
+    };
+    useEffect(() => {
+        checkUserAuthentication();
+        checkUserRole();
+    }, []);
+
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(15);
     const [searchTerm, setSearchTerm] = useState('');

@@ -6,6 +6,7 @@ import {useState} from "react";
 import {SideBar} from "./Components/sideBar";
 import {Calendar} from "./Pages/calendar";
 import Staff from "./Pages/staff";
+import Login from "./Pages/login";
 import {createBrowserRouter, RouterProvider, useNavigate} from "react-router-dom";
 
 import { ClientProvider } from './Components/ClientContext';
@@ -24,6 +25,10 @@ function App() {
         {
             path: '/clients',
             element: <Staff />
+        },
+        {
+            path: '/login',
+            element: <Login />
         }
     ])
 

@@ -3,11 +3,25 @@ import {Form} from "../Components/form";
 import {Button, Container} from "@mui/material";
 import {SideBar} from "../Components/sideBar";
 import {useEffect, useState} from "react";
+import {useNavigate} from "react-router-dom";
 
 import { useClient } from '../Components/ClientContext';
 import axios from "axios";
 
 export const Calendar = () => {
+
+    const navigate = useNavigate()
+
+    const checkUserAuthentication = () => {
+        const user = localStorage.getItem('gntcuser');
+        if (!user) {
+            navigate('/login');
+        }
+    };
+    useEffect(() => {
+        checkUserAuthentication();
+    }, []);
+    
     const [open, setOpen] = useState(false);
     const [meetings, setMeetings] = useState([]);
     const [meetingsBackup, setMeetingsBackup] = useState([]);
