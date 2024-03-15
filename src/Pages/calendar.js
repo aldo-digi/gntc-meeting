@@ -96,7 +96,7 @@ export const Calendar = () => {
             <Button onClick={()=>setOpen(true)}>Open drawer</Button>
             <SideBar open={open} setOpen={setOpen}/>
         <Container>
-            <h1>agjenda ditore e takimeve</h1>
+            <h1>Agjenda ditore e takimeve</h1>
             <Scheduler
                 customEditor={(scheduler) => <Form scheduler={scheduler} updateMeeting={updateMeeting}/> }
                 view="week"
@@ -131,8 +131,8 @@ export const Calendar = () => {
                         agenda: "Agjenda"
                     },
                     form: {
-                        addTitle: "Shto një Mbledhje",
-                        editTitle: "Edito Mbledhjen",
+                        addTitle: "Shto një Takim",
+                        editTitle: "Edito Takimin",
                         confirm: "Konfirmo",
                         delete: "Fshij",
                         cancel: "Anulo"
