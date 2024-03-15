@@ -124,34 +124,34 @@ export const Calendar = () => {
                 }}
                 translations={{
                     navigation: {
-                        month: "Month",
-                        week: "Week",
-                        day: "Day",
-                        today: "Today",
-                        agenda: "Agenda"
+                        month: "Muaji",
+                        week: "Java",
+                        day: "Dita",
+                        today: "Sot",
+                        agenda: "Agjenda"
                     },
                     form: {
-                        addTitle: "Add Event",
-                        editTitle: "Edit Event",
-                        confirm: "Confirm",
-                        delete: "Delete",
-                        cancel: "Cancel"
+                        addTitle: "Shto një Mbledhje",
+                        editTitle: "Edito Mbledhjen",
+                        confirm: "Konfirmo",
+                        delete: "Fshij",
+                        cancel: "Anulo"
                     },
                     event: {
-                        title: "Title",
-                        start: "Start",
-                        end: "End",
-                        allDay: "All Day"
+                        title: "Titulli",
+                        start: "Fillo",
+                        end: "Përfundo",
+                        allDay: "Gjithë ditën"
                     },
                     validation: {
-                        required: "Required",
-                        invalidEmail: "Invalid Email",
-                        onlyNumbers: "Only Numbers Allowed",
-                        min: "Minimum {{min}} letters",
-                        max: "Maximum {{max}} letters"
+                        required: "Kërkohet",
+                        invalidEmail: "Email i pavlefshëm",
+                        onlyNumbers: "Vetëm numrat lejohen",
+                        min: "Minimumi {{min}} i shkronjav",
+                        max: "Maksimumi {{max}} i shkronjav"
                     },
-                    moreEvents: "More...",
-                    noDataToDisplay: "No data to display",
+                    moreEvents: "Më shumë...",
+                    noDataToDisplay: "Nuk ka të dhëna për t'u shfaqur",
                     loading: "Loading..."
                 }}
             />
