@@ -167,7 +167,7 @@ const Staff = () => {
                     justifyContent: 'space-between',
                     alignItems: 'center',
                 }}>
-                    <h1>Clients</h1>
+                    <h1>Stafi</h1>
                     <div style={{
                         display: 'flex',
                         gap: 20,
@@ -175,7 +175,7 @@ const Staff = () => {
                         <TextField
                             sx={{width: 300, mt: 2}}
                             size={'small'}
-                            label="Search"
+                            label="Kërko"
                             variant="outlined"
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
@@ -194,7 +194,7 @@ const Staff = () => {
                             startIcon={<AddIcon/>}
                             onClick={handleFormOpen}
                         >
-                            Add Client
+                            Shto Stafin
                         </Button>
                     </div>
                 </div>
@@ -202,13 +202,13 @@ const Staff = () => {
                     <Table>
                         <TableHead>
                             <TableRow>
-                                <TableCell>Client ID</TableCell>
-                                <TableCell>Name</TableCell>
-                                <TableCell>Company</TableCell>
-                                <TableCell>City</TableCell>
-                                <TableCell>Email</TableCell>
-                                <TableCell>Phone Number</TableCell>
-                                <TableCell>Actions</TableCell> {/* Added Position column */}
+                                <TableCell>ID-ja e Stafit</TableCell>
+                                <TableCell>Emri</TableCell>
+                                <TableCell>Kompania</TableCell>
+                                <TableCell>Qyteti</TableCell>
+                                <TableCell>E-mail</TableCell>
+                                <TableCell>Numri i Telefonit</TableCell>
+                                <TableCell>Ndrysho</TableCell> {/* Added Position column */}
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -221,7 +221,7 @@ const Staff = () => {
                                     <TableCell>{row.email}</TableCell>
                                     <TableCell>{row.phoneNumber}</TableCell>
                                 <TableCell>
-                                    <Button variant="outlined" color="primary" onClick={()=>handleEditClient(index)} >Edit</Button>
+                                    <Button variant="outlined" color="primary" onClick={()=>handleEditClient(index)} >Edito</Button>
                                     <Button variant="outlined" color="error" style={{ marginLeft: '8px' }} onClick={() => handleDeleteClient(index)}>Delete</Button>
                                 </TableCell>
                             </TableRow>
@@ -245,7 +245,7 @@ const Staff = () => {
                     <DialogContent>
                         <TextField
                             margin="dense"
-                            label="Name"
+                            label="Emri"
                             fullWidth
                             name="name"
                             value={formData.name}
@@ -253,7 +253,7 @@ const Staff = () => {
                         />
                         <TextField
                             margin="dense"
-                            label="Company"
+                            label="Kompania"
                             fullWidth
                             name="company"
                             value={formData.company}
@@ -261,7 +261,7 @@ const Staff = () => {
                         />
                         <TextField
                             margin="dense"
-                            label="City"
+                            label="Qyteti"
                             fullWidth
                             name="city"
                             value={formData.city}
@@ -269,7 +269,7 @@ const Staff = () => {
                         />
                         <TextField
                             margin="dense"
-                            label="Email"
+                            label="E-mail"
                             fullWidth
                             name="email"
                             value={formData.email}
@@ -277,7 +277,7 @@ const Staff = () => {
                         />
                         <TextField
                             margin="dense"
-                            label="Phone Number"
+                            label="Numri i Telefonit"
                             fullWidth
                             name="phoneNumber"
                             value={formData.phoneNumber}
@@ -285,8 +285,8 @@ const Staff = () => {
                         />
                     </DialogContent>
                     <DialogActions>
-                        <Button color='error' onClick={handleFormClose}>Cancel</Button>
-                        <Button onClick={handleFormSubmit}>Submit</Button>
+                        <Button color='error' onClick={handleFormClose}>Anulo</Button>
+                        <Button onClick={handleFormSubmit}>Dërgo</Button>
                     </DialogActions>
                 </Dialog>
             </Container>
