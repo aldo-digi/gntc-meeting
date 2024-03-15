@@ -75,18 +75,18 @@ export const Form = ({ scheduler,updateMeeting }) => {
                     id="email"
                     onInputChange={(e, newVal) => setFormData({ ...formData, email: newVal })}
                     options={users.map((option) => option.email)}
-                    renderInput={(params) => <TextField {...params} label="Email" />}
+                    renderInput={(params) => <TextField {...params} label="E-mail" />}
                 />
             </FormControl>
             <TextField
-                label="Date"
+                label="Data"
                 type="date"
                 name="date"
                 value={formData.date}
                 onChange={handleChange}
             />
             <TextField
-                label="Time"
+                label="Koha"
                 type="time"
                 name="time"
                 value={formData.time}
@@ -128,7 +128,7 @@ export const Form = ({ scheduler,updateMeeting }) => {
                     scheduler.onConfirm(newEvent, event ? "edit" : "create");
                     scheduler.close();
                 }
-                }>Save</Button>
+                }>Ruaj</Button>
             </div>
 
         </form>
