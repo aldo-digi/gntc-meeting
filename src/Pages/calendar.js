@@ -96,19 +96,19 @@ export const Calendar = () => {
             <Button onClick={()=>setOpen(true)}>Open drawer</Button>
             <SideBar open={open} setOpen={setOpen}/>
         <Container>
-            <h1>Gorenje kalendari</h1>
+            <h1>agjenda ditore e takimeve</h1>
             <Scheduler
                 customEditor={(scheduler) => <Form scheduler={scheduler} updateMeeting={updateMeeting}/> }
                 view="week"
                 events={meetings}
-                viewerExtraComponent={(fields, event) => {
-                    return (
-                        <div>
-                            <p>Useful to render custom fields...</p>
-                            <p>Description: {event.title || "Nothing..."}</p>
-                        </div>
-                    );
-                }}
+                // viewerExtraComponent={(fields, event) => {
+                //     return (
+                //         <div>
+                //             <p>Useful to render custom fields...</p>
+                //             <p>Description: {event.title || "Nothing..."}</p>
+                //         </div>
+                //     );
+                // }}
                 onEventDrop={async (newDate, newEvent, oldEvent) => {
                     await updateMeeting({
                         _id: newEvent._id,

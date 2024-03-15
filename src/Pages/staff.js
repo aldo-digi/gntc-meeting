@@ -15,9 +15,6 @@ import {
     DialogTitle,
     DialogContent,
     DialogActions,
-    Select,
-    MenuItem,
-    InputLabel, FormControl
 } from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
 import axios from 'axios';
@@ -56,6 +53,7 @@ const Staff = () => {
         company: '',
         city: '',
         email: '',
+        phoneNumber: '',
     });
 
     const handleChangePage = (event, newPage) => {
@@ -78,6 +76,7 @@ const Staff = () => {
             company: '',
             city: '',
             email: '',
+            phoneNumber: '',
         });
     };
 
@@ -111,6 +110,7 @@ const Staff = () => {
                     company: '',
                     city: '',
                     email: '',
+                    phoneNumber: '',
                 });
                 setOpenForm(false); // Close the form dialog
                 return;
@@ -125,6 +125,7 @@ const Staff = () => {
                 company: '',
                 city: '',
                 email: '',
+                phoneNumber: '',
             })
             setOpenForm(false); // Close the form dialog
         } catch (error) {
@@ -206,6 +207,7 @@ const Staff = () => {
                                 <TableCell>Company</TableCell>
                                 <TableCell>City</TableCell>
                                 <TableCell>Email</TableCell>
+                                <TableCell>Phone Number</TableCell>
                                 <TableCell>Actions</TableCell> {/* Added Position column */}
                             </TableRow>
                         </TableHead>
@@ -216,7 +218,8 @@ const Staff = () => {
                                 <TableCell>{row.name}</TableCell>
                                 <TableCell>{row.company}</TableCell>
                                 <TableCell>{row.city}</TableCell>
-                                <TableCell>{row.email}</TableCell>
+                                    <TableCell>{row.email}</TableCell>
+                                    <TableCell>{row.phoneNumber}</TableCell>
                                 <TableCell>
                                     <Button variant="outlined" color="primary" onClick={()=>handleEditClient(index)} >Edit</Button>
                                     <Button variant="outlined" color="error" style={{ marginLeft: '8px' }} onClick={() => handleDeleteClient(index)}>Delete</Button>
@@ -270,6 +273,14 @@ const Staff = () => {
                             fullWidth
                             name="email"
                             value={formData.email}
+                            onChange={handleInputChange}
+                        />
+                        <TextField
+                            margin="dense"
+                            label="Phone Number"
+                            fullWidth
+                            name="phoneNumber"
+                            value={formData.phoneNumber}
                             onChange={handleInputChange}
                         />
                     </DialogContent>
