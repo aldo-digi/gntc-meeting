@@ -1,4 +1,4 @@
-import {useState, useContext} from 'react';
+import {useState, useContext, useEffect} from 'react';
 import {
     Container,
     TableContainer,
@@ -31,32 +31,14 @@ const Staff = () => {
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(15);
     const [searchTerm, setSearchTerm] = useState('');
-    const [rows, setRows] = useState([
-        {
-            id: 1,
-            name: 'John Doe',
-            company: 'GNTC',
-            city: 'New York',
-            gender: 'Male',
-            email: 'john@example.com',
-            position: 'Staff'
-        },
-        {
-            id: 2,
-            name: 'Jane Smith',
-            company: 'GNTC',
-            city: 'Los Angeles',
-            gender: 'Female',
-            email: 'jane@example.com',
-            position: 'Manager'
-        },
-        // Add more rows as needed
-    ]);
+    const [editedIndex, setEditedIndex] = useState(null); // Track currently edited client index
+    const { clients,setClients, updateClients, deleteClients } = useClient();
 
-    //client Context
-    const { clients, updateClients, deleteClients } = useClient();
 
     const handleDeleteClient = (index) => {
+
+        const response = axios.delete(`${process.env.REACT_APP_BACKEND_URL}/clients/delete/${clients[index]._id}`);
+
         // Create a copy of the clients array
         const remaianingClients = [...clients];
         // Remove the client at the specified index
@@ -74,7 +56,6 @@ const Staff = () => {
         company: '',
         city: '',
         email: '',
-        position: '', // No default position
     });
 
     const handleChangePage = (event, newPage) => {
@@ -92,6 +73,12 @@ const Staff = () => {
 
     const handleFormClose = () => {
         setOpenForm(false);
+        setFormData({
+            name: '',
+            company: '',
+            city: '',
+            email: '',
+        });
     };
 
     const handleInputChange = (e) => {
@@ -99,27 +86,75 @@ const Staff = () => {
         setFormData({...formData, [name]: value});
     };
 
+    const handleEditClient = (index) => {
+        setEditedIndex(index); // Set the index of the client being edited
+        setOpenForm(true); // Open the form dialog
+        // Populate form data with the client being edited
+        setFormData({
+            ...clients[index],
+        });
+    };
+
     const handleFormSubmit = async () => {
         try {
-            updateClients(formData);
+            if(editedIndex !== null) {
+                // Send PUT request to update client
+                const clientId = clients[editedIndex]._id;
+                const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/clients/update/${clientId}`, formData);
+                const updatedClient = response.data;
+                const updatedRows = [...clients];
+                updatedRows[editedIndex] = updatedClient;
+                setClients(updatedRows); // Update table with updated client
+                setEditedIndex(null); // Reset editedIndex
+                setFormData({
+                    name: '',
+                    company: '',
+                    city: '',
+                    email: '',
+                });
+                setOpenForm(false); // Close the form dialog
+                return;
+            }
 
             // Send POST request to add client
-            // const response = await axios.post('/api/clients', formData);
-            // const newClient = response.data;
-            setRows([...rows, formData]); // Update table with new client
+            const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/clients/add`, formData);
+            const newClient = response.data;
+            setClients([...clients, newClient]); // Update table with new client
+            setFormData({
+                name: '',
+                company: '',
+                city: '',
+                email: '',
+            })
             setOpenForm(false); // Close the form dialog
         } catch (error) {
             console.error('Error adding client:', error);
         }
     };
 
-    const positions = ['Manager', 'Staff', 'Other']; // Available positions
-
     const filteredRows = clients.filter(row =>
         row.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         row.company.toLowerCase().includes(searchTerm.toLowerCase()) ||
         row.email.toLowerCase().includes(searchTerm.toLowerCase())
     );
+
+
+    const getClients = ()=> {
+        axios.get(`${process.env.REACT_APP_BACKEND_URL}/clients/get`).then((response)=>{
+            console.log(response.data);
+            setClients(response.data);
+        }).catch((error)=>{
+            console.log(error);
+        })
+    }
+
+    useEffect(() => {
+        getClients();
+    }, []);
+
+    useEffect(()=>{
+        console.log('test',clients)
+    })
 
     return (
         <>
@@ -171,7 +206,6 @@ const Staff = () => {
                                 <TableCell>Company</TableCell>
                                 <TableCell>City</TableCell>
                                 <TableCell>Email</TableCell>
-                                <TableCell>Position</TableCell>
                                 <TableCell>Actions</TableCell> {/* Added Position column */}
                             </TableRow>
                         </TableHead>
@@ -183,13 +217,12 @@ const Staff = () => {
                                 <TableCell>{row.company}</TableCell>
                                 <TableCell>{row.city}</TableCell>
                                 <TableCell>{row.email}</TableCell>
-                                <TableCell>{row.position}</TableCell>
                                 <TableCell>
-                                    <Button variant="outlined" color="primary" >Edit</Button>
-                                    <Button variant="outlined" color="secondary" style={{ marginLeft: '8px' }} onClick={() => handleDeleteClient(index)}>Delete</Button>
+                                    <Button variant="outlined" color="primary" onClick={()=>handleEditClient(index)} >Edit</Button>
+                                    <Button variant="outlined" color="error" style={{ marginLeft: '8px' }} onClick={() => handleDeleteClient(index)}>Delete</Button>
                                 </TableCell>
                             </TableRow>
-                            
+
                             ))}
                         </TableBody>
                     </Table>
@@ -231,24 +264,6 @@ const Staff = () => {
                             value={formData.city}
                             onChange={handleInputChange}
                         />
-                        <FormControl fullWidth sx={{
-                            mt: 1,
-                            mb: 1
-                        }}>
-                            <InputLabel id="gender">Position</InputLabel>
-                            <Select
-                                margin="dense"
-                                label="Position"
-                                fullWidth
-                                name="position"
-                                value={formData.position}
-                                onChange={handleInputChange}
-                            >
-                                {positions.map((position, index) => (
-                                    <MenuItem key={index} value={position}>{position}</MenuItem>
-                                ))}
-                            </Select>
-                        </FormControl>
                         <TextField
                             margin="dense"
                             label="Email"
@@ -259,7 +274,7 @@ const Staff = () => {
                         />
                     </DialogContent>
                     <DialogActions>
-                        <Button onClick={handleFormClose}>Cancel</Button>
+                        <Button color='error' onClick={handleFormClose}>Cancel</Button>
                         <Button onClick={handleFormSubmit}>Submit</Button>
                     </DialogActions>
                 </Dialog>

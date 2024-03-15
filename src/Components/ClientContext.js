@@ -4,7 +4,20 @@ import React, { createContext, useContext, useState } from 'react';
 const ClientContext = createContext();
 
 export const ClientProvider = ({ children }) => {
-  const [clients, setClients] = useState([]);
+  const [clients, setClients] = useState([
+    {
+      name: 'John Doe',
+      company: 'ABC Company',
+      city: 'New York',
+      email: 'email@email.com',
+    },
+    {
+      name: 'Jane Doe',
+      company: 'XYZ Company',
+      city: 'Los Angeles',
+      email: 'email1@email.com',
+    },
+  ]);
 
   const updateClients = (newClient) => {
     setClients((prevClients) => [...prevClients, newClient]);
@@ -18,7 +31,7 @@ export const ClientProvider = ({ children }) => {
   }
 
   return (
-    <ClientContext.Provider value={{ clients, updateClients, deleteClients }}>
+    <ClientContext.Provider value={{ clients,setClients, updateClients, deleteClients }}>
       {children}
     </ClientContext.Provider>
   );

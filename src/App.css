@@ -1,3 +1,13 @@
 .Mui-selected{
   background-color:#FFEE0D
 }
+
+.css-ess3ih .rs__cell:not(.rs__time){
+  background-color: #FFEE0D;
+  color: #000000;
+  font-weight: bold;
+}
+
+.css-1sn4lm3-MuiTypography-root{
+    font-weight: bold;
+}

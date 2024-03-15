@@ -1,50 +1,60 @@
-import {Autocomplete, Button, FormControl, InputLabel, MenuItem, Select, TextField} from "@mui/material";
-import {useState, useEffect} from "react";
-import ShortUniqueId from "short-unique-id";
+import React, { useState, useEffect } from "react";
+import { Autocomplete, Button, FormControl, InputLabel, TextField } from "@mui/material";
 import { useClient } from "./ClientContext";
+import ShortUniqueId from "short-unique-id";
+import randomColor from 'randomcolor';
+import axios from "axios";
 
-export const Form = ({scheduler}) => {
-
-    const { clients, updateClients } = useClient();
+export const Form = ({ scheduler,updateMeeting }) => {
     const [users, setUsers] = useState([]);
+
+    const getClients = async () => {
+        const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/clients/get`);
+        setUsers(response.data);
+    }
+
     useEffect(() => {
-        setUsers(clients);
-        console.log(clients);
+        getClients()
     }, []);
+
 
     const event = scheduler.edited;
 
-    console.log(scheduler.state.start.value, scheduler.state.end.value);
     const [formData, setFormData] = useState({
         email: event?.title || '',
-        start: scheduler.state.start.value ||  '',
+        start: scheduler.state.start.value || '',
         end: scheduler.state.end.value || '',
+        date: event ? scheduler.state.start.value.toISOString().split('T')[0] : '',
+        time: event ? scheduler.state.end.value.toISOString().split('T')[1].split('.')[0] : '',
     });
 
     const handleChange = (event) => {
-        setFormData({...formData, [event.target.name]: event.target.value});
-        console.log(formData);
+        const { name, value } = event.target;
+        setFormData(prevState => ({
+            ...prevState,
+            [name]: value
+        }));
+
+        if (name === "date" || name === "time") {
+            setFormData(prevState => ({
+                ...prevState,
+                start: `${prevState.date}T${prevState.time}`
+            }));
+        }
+    };
+
+    const addMeeting = async (newMeeting) => {
+        console.log(newMeeting)
+        const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/meetings/add`, {
+            event_id: newMeeting.event_id,
+            start: newMeeting.start,
+            end: newMeeting.end,
+            client: newMeeting.title,
+            color: newMeeting.color,
+        });
+        console.log('here')
+            console.log(response);
     }
-
-    const date = new Date(scheduler.state.start.value );
-
-// Adjusting time for the local timezone
-    const localTime = date.getTime() + (date.getTimezoneOffset() * 60000);
-    const localDate = new Date(localTime);
-
-// Formatting the date for input value
-    const year = localDate.getFullYear();
-    const month = String(localDate.getMonth() + 1).padStart(2, '0');
-    const day = String(localDate.getDate()).padStart(2, '0');
-    const hours = String(localDate.getHours()).padStart(2, '0');
-    const minutes = String(localDate.getMinutes()).padStart(2, '0');
-    const formattedDate = `${year}-${month}-${day}T${hours}:${minutes}`;
-
-    // const users = [
-    //     {email: 'hello@mail.com'},
-    //     {email: 'hello1@mail.com'},
-    //     {email: 'hello2@mail.com'},
-    // ]
 
     return (
         <form style={{
@@ -58,30 +68,28 @@ export const Form = ({scheduler}) => {
                 <Autocomplete
                     sx={{
                         zIndex: 1000,
+                        minWidth: 400,
                     }}
                     value={formData.email}
                     disablePortal
                     id="email"
-                    onInputChange={(e,newVal)=>setFormData({
-                        ...formData,
-                        email:newVal
-                    })}
+                    onInputChange={(e, newVal) => setFormData({ ...formData, email: newVal })}
                     options={users.map((option) => option.email)}
-                    renderInput={(params) => <TextField {...params} label="Email"  />}
+                    renderInput={(params) => <TextField {...params} label="Email" />}
                 />
             </FormControl>
             <TextField
                 label="Date"
                 type="date"
-                name="start"
-                value={formData.start}
+                name="date"
+                value={formData.date}
                 onChange={handleChange}
             />
             <TextField
                 label="Time"
                 type="time"
-                name="end"
-                value={formData.end}
+                name="time"
+                value={formData.time}
                 onChange={handleChange}
             />
 
@@ -91,15 +99,33 @@ export const Form = ({scheduler}) => {
                 gap: 20,
             }}>
                 <Button variant="contained" color="error" onClick={scheduler.close}>Cancel</Button>
-                <Button variant="contained" color="primary" onClick={() => {
-                    const { randomUUID } = new ShortUniqueId({ length: 10 });
+                <Button variant="contained" color="primary" onClick={async () => {
+                    const {randomUUID} = new ShortUniqueId({length: 10});
+                    const color = randomColor({
+                        luminosity: 'dark',
+                    });
+                    const start = formData.start ? new Date(formData.start) : null;
+                    const end = new Date(start);
+                    end.setHours(end.getHours() + 1);
+
                     const newEvent = {
-                        event_id:randomUUID(),
-                        start: formData.start,
-                        end: formData.end,
+                        event_id: randomUUID(),
+                        start: start,
+                        end: end,
                         title: formData.email,
+                        color: color,
+                    };
+
+                    if (!event) {
+                        await addMeeting(newEvent)
+                    }else{
+                        await updateMeeting({
+                            ...newEvent,
+                            client: newEvent.title,
+                            _id: event._id
+                        })
                     }
-                    scheduler.onConfirm(newEvent,event?"edit":"create");
+                    scheduler.onConfirm(newEvent, event ? "edit" : "create");
                     scheduler.close();
                 }
                 }>Save</Button>
@@ -107,4 +133,4 @@ export const Form = ({scheduler}) => {
 
         </form>
     )
-}
+};

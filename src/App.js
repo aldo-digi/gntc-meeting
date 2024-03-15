@@ -14,7 +14,11 @@ function App() {
 
     const router = createBrowserRouter([
         {
-            path: '/kalendari ',
+            path: '/',
+            element: <Calendar />
+        },
+        {
+            path: '/kalendari',
             element: <Calendar />
         },
         {
