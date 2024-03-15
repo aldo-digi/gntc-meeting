@@ -286,7 +286,7 @@ const Staff = () => {
                     </DialogContent>
                     <DialogActions>
                         <Button color='error' onClick={handleFormClose}>Anulo</Button>
-                        <Button onClick={handleFormSubmit}>Dërgo</Button>
+                        <Button onClick={handleFormSubmit}>Ruaj</Button>
                     </DialogActions>
                 </Dialog>
             </Container>
