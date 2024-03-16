@@ -16,13 +16,14 @@ import {
     Dialog,
     DialogTitle,
     DialogContent,
-    DialogActions,
+    DialogActions, useTheme, useMediaQuery, IconButton,
 } from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
 import axios from 'axios';
 import {SideBar} from "../Components/sideBar"; // Import axios for HTTP requests
 
 import { useClient } from '../Components/ClientContext';
+import MenuIcon from "@mui/icons-material/Menu";
 
 
 
@@ -38,13 +39,15 @@ const Staff = () => {
     };
     const checkUserRole = () => {
         const user = localStorage.getItem('gntcuserrole');
-        if (user !== 'editor') {
+        console.log('test role',user)
+        if (user !== '"editor"') {
+            console.log('jere')
             navigate('/kalendari');
         }
     };
     useEffect(() => {
-        // checkUserAuthentication();
-        // checkUserRole();
+        checkUserAuthentication();
+        checkUserRole();
     }, []);
 
     const [page, setPage] = useState(0);
@@ -52,6 +55,8 @@ const Staff = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [editedIndex, setEditedIndex] = useState(null); // Track currently edited client index
     const { clients,setClients, updateClients, deleteClients } = useClient();
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
 
     const handleDeleteClient = (index) => {
@@ -180,9 +185,19 @@ const Staff = () => {
     })
 
     return (
-        <>
-            <Button onClick={() => setOpen(true)}>Open drawer</Button>
-            <SideBar open={open} setOpen={setOpen}/>
+        <div style={!isMobile? {
+            marginLeft: 250,
+            transition: 'margin-left 0.5s',
+            padding: '20px'
+        }:{
+
+        }}>
+            {isMobile && <IconButton
+                onClick={() => setOpen(true)}
+                style={{}}
+            >
+                <MenuIcon/>
+            </IconButton>}            <SideBar open={open} setOpen={setOpen}/>
             <Container>
                 <div style={{
                     display: 'flex',
@@ -312,7 +327,7 @@ const Staff = () => {
                     </DialogActions>
                 </Dialog>
             </Container>
-        </>
+        </div>
     );
 };
 

@@ -1,15 +1,16 @@
-import {useEffect, useState} from 'react';
+import { useEffect, useState } from 'react';
 import { Box, Divider, Drawer, List, ListItem, ListItemButton, ListItemIcon, ListItemText, useMediaQuery, useTheme } from "@mui/material";
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
-import logo from '../Assets/logo.png'
-import {useLocation, useNavigate, useRoutes} from "react-router-dom";
+import ExitToAppIcon from '@mui/icons-material/ExitToApp'; // Import the ExitToAppIcon
+import logo from '../Assets/logo.png';
+import { useLocation, useNavigate, useRoutes } from "react-router-dom";
 
-export const SideBar = ({open, setOpen }) => {
+export const SideBar = ({ open, setOpen }) => {
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
     const [activeItem, setActiveItem] = useState('kalendria');
-    const navigate = useNavigate()
+    const navigate = useNavigate();
     const path = useLocation().pathname;
 
     const toggleDrawer = (newOpen) => () => {
@@ -18,10 +19,16 @@ export const SideBar = ({open, setOpen }) => {
 
     const handleItemClick = (itemName) => {
         setActiveItem(itemName);
-        navigate(`/${itemName.toLowerCase()}`)
+        navigate(`/${itemName.toLowerCase()}`);
     };
 
-    const userRole = localStorage.getItem('gntcuserrole')
+    const handleLogout = () => {
+        localStorage.removeItem('gntcuserrole');
+        localStorage.removeItem('gntcuser');
+        navigate('/login');
+    };
+
+    const userRole = localStorage.getItem('gntcuserrole');
 
     useEffect(() => {
         setActiveItem(path.split('/')[1] || 'kalendria');
@@ -42,7 +49,7 @@ export const SideBar = ({open, setOpen }) => {
                     <ListItem
                         key='kalendari'
                         sx={{
-                            mb:2,
+                            mb: 2,
                             borderRadius: 20,
                             '&:hover': {
                                 backgroundColor: '#FFEE0D',
@@ -61,7 +68,7 @@ export const SideBar = ({open, setOpen }) => {
                     <ListItem
                         key='clients'
                         sx={{
-                            mb:2,
+                            mb: 2,
                             borderRadius: 20,
                             '&:hover': {
                                 backgroundColor: '#FFEE0D',
@@ -78,7 +85,21 @@ export const SideBar = ({open, setOpen }) => {
                         </ListItemButton>
                     </ListItem>
                 </List>
+                <Divider />
+                <List sx={{ marginTop: 'auto' }}>
+                    <ListItem
+                        button
+                        key="logout"
+                        onClick={handleLogout}
+                        sx={{ borderRadius: 20 }}
+                    >
+                        <ListItemIcon>
+                            <ExitToAppIcon />
+                        </ListItemIcon>
+                        <ListItemText primary="Logout" />
+                    </ListItem>
+                </List>
             </Box>
         </Drawer>
-    )
-}
+    );
+};

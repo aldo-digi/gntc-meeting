@@ -1,12 +1,13 @@
 import {Scheduler} from "@aldabil/react-scheduler";
 import {Form} from "../Components/form";
-import {Button, Container} from "@mui/material";
+import {Button, Container, IconButton, useMediaQuery, useTheme} from "@mui/material";
 import {SideBar} from "../Components/sideBar";
 import {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 
 import { useClient } from '../Components/ClientContext';
 import axios from "axios";
+import MenuIcon from "@mui/icons-material/Menu";
 
 export const Calendar = () => {
 
@@ -19,12 +20,14 @@ export const Calendar = () => {
         }
     };
     useEffect(() => {
-        // checkUserAuthentication();
+        checkUserAuthentication();
     }, []);
-    
+
     const [open, setOpen] = useState(false);
     const [meetings, setMeetings] = useState([]);
     const [meetingsBackup, setMeetingsBackup] = useState([]);
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
     const getMeetings = async () => {
         const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/meetings/get`);
@@ -34,7 +37,8 @@ export const Calendar = () => {
             return {
                 _id: meeting._id,
                 event_id: meeting.event_id,
-                title: meeting.client,
+                title: meeting.clients.length>1 ? meeting.clients.join(', ') : meeting.clients[0],
+                clients: meeting.clients,
                 start: new Date(meeting.start),
                 end: new Date(meeting.end),
                 color: meeting.color,
@@ -44,7 +48,8 @@ export const Calendar = () => {
             return {
                 _id: meeting._id,
                 event_id: meeting.event_id,
-                title: meeting.client,
+                title: meeting.clients.length>1 ? meeting.clients.join(', ') : meeting.clients[0],
+                clients: meeting.clients,
                 start: new Date(meeting.start),
                 end: new Date(meeting.end),
                 color: meeting.color,
@@ -105,9 +110,19 @@ export const Calendar = () => {
 
 
     return (
-        <>
+        <div style={!isMobile? {
+            marginLeft: 250,
+            transition: 'margin-left 0.5s',
+            padding: '20px'
+        }:{
 
-            <Button onClick={()=>setOpen(true)}>Open drawer</Button>
+        }}>
+            {isMobile && <IconButton
+                onClick={() => setOpen(true)}
+                style={{}}
+            >
+                <MenuIcon/>
+            </IconButton>}
             <SideBar open={open} setOpen={setOpen}/>
         <Container>
             <h1>Agjenda Ditore e Takimeve</h1>
@@ -115,18 +130,25 @@ export const Calendar = () => {
                 customEditor={(scheduler) => <Form scheduler={scheduler} updateMeeting={updateMeeting}/> }
                 view="week"
                 events={meetings}
-                // viewerExtraComponent={(fields, event) => {
-                //     return (
-                //         <div>
-                //             <p>Useful to render custom fields...</p>
-                //             <p>Description: {event.title || "Nothing..."}</p>
-                //         </div>
-                //     );
-                // }}
+                viewerExtraComponent={(fields, event) => {
+                    return (
+                        <div>
+                            <h3>Detajet e Takimit</h3>
+                            <p><strong>Fillo:</strong> {event.start.toLocaleString()}</p>
+                            <p><strong>Përfundo:</strong> {event.end.toLocaleString()}</p>
+                            {
+                                event.clients.map((client, index) => {
+                                    return <p key={index}><strong>Klienti {index+1}:</strong> {client}</p>
+                                }
+                                )
+                            }
+                        </div>
+                    );
+                }}
                 onEventDrop={async (newDate, newEvent, oldEvent) => {
                     await updateMeeting({
                         _id: newEvent._id,
-                        client: newEvent.title,
+                        clients: newEvent.clients,
                         start: newEvent.start,
                         end: newEvent.end,
                         color: newEvent.color,
@@ -170,6 +192,6 @@ export const Calendar = () => {
                 }}
             />
         </Container>
-            </>
+            </div>
     )
 }

@@ -5,8 +5,9 @@ import ShortUniqueId from "short-unique-id";
 import randomColor from 'randomcolor';
 import axios from "axios";
 
-export const Form = ({ scheduler,updateMeeting }) => {
+export const Form = ({ scheduler, updateMeeting }) => {
     const [users, setUsers] = useState([]);
+    const [selectedEmails, setSelectedEmails] = useState([]);
 
     const getClients = async () => {
         const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/clients/get`);
@@ -14,14 +15,13 @@ export const Form = ({ scheduler,updateMeeting }) => {
     }
 
     useEffect(() => {
-        getClients()
+        getClients();
     }, []);
-
 
     const event = scheduler.edited;
 
     const [formData, setFormData] = useState({
-        email: event?.title || '',
+        emails: [],
         start: scheduler.state.start.value || '',
         end: scheduler.state.end.value || '',
         date: event ? scheduler.state.start.value.toISOString().split('T')[0] : '',
@@ -44,16 +44,15 @@ export const Form = ({ scheduler,updateMeeting }) => {
     };
 
     const addMeeting = async (newMeeting) => {
-        console.log(newMeeting)
+        console.log('add meeting test',newMeeting)
         const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/meetings/add`, {
             event_id: newMeeting.event_id,
             start: newMeeting.start,
             end: newMeeting.end,
-            client: newMeeting.title,
+            clients: newMeeting.clients,
             color: newMeeting.color,
         });
-        console.log('here')
-            console.log(response);
+        console.log(response);
     }
 
     return (
@@ -70,12 +69,13 @@ export const Form = ({ scheduler,updateMeeting }) => {
                         zIndex: 1000,
                         minWidth: 400,
                     }}
-                    value={formData.email}
+                    value={selectedEmails}
+                    multiple
                     disablePortal
-                    id="email"
-                    onInputChange={(e, newVal) => setFormData({ ...formData, email: newVal })}
+                    id="emails"
+                    onChange={(event, newValue) => setSelectedEmails(newValue)}
                     options={users.map((option) => option.email)}
-                    renderInput={(params) => <TextField {...params} label="E-mail" />}
+                    renderInput={(params) => <TextField {...params} label="E-mails" />}
                 />
             </FormControl>
             <TextField
@@ -100,7 +100,7 @@ export const Form = ({ scheduler,updateMeeting }) => {
             }}>
                 <Button variant="contained" color="error" onClick={scheduler.close}>Cancel</Button>
                 <Button variant="contained" color="primary" onClick={async () => {
-                    const {randomUUID} = new ShortUniqueId({length: 10});
+                    const { randomUUID } = new ShortUniqueId({ length: 10 });
                     const color = randomColor({
                         luminosity: 'dark',
                     });
@@ -108,27 +108,27 @@ export const Form = ({ scheduler,updateMeeting }) => {
                     const end = new Date(start);
                     end.setHours(end.getHours() + 1);
 
+
                     const newEvent = {
                         event_id: randomUUID(),
                         start: start,
                         end: end,
-                        title: formData.email,
+                        title: selectedEmails.length>1 ? `${selectedEmails[0]} and more` : selectedEmails[0],
+                        clients: selectedEmails,
                         color: color,
                     };
 
                     if (!event) {
                         await addMeeting(newEvent)
-                    }else{
+                    } else {
                         await updateMeeting({
                             ...newEvent,
-                            client: newEvent.title,
                             _id: event._id
                         })
                     }
                     scheduler.onConfirm(newEvent, event ? "edit" : "create");
                     scheduler.close();
-                }
-                }>Ruaj</Button>
+                }}>Ruaj</Button>
             </div>
 
         </form>
