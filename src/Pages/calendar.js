@@ -40,8 +40,7 @@ export const Calendar = () => {
                 title: meeting.clients.length>1 ? meeting.clients.join(', ') : meeting.clients[0],
                 clients: meeting.clients,
                 start: new Date(meeting.start),
-
-                
+                end: new Date(meeting.end),
                 color: meeting.color,
             }
         }));
@@ -52,7 +51,7 @@ export const Calendar = () => {
                 title: meeting.clients.length>1 ? meeting.clients.join(', ') : meeting.clients[0],
                 clients: meeting.clients,
                 start: new Date(meeting.start),
-           
+                end: new Date(meeting.end),
                 color: meeting.color,
             }
         }));
@@ -72,7 +71,7 @@ export const Calendar = () => {
                 return {
                     ...meeting,
                     start: newMeeting.start,
-                
+                    end: newMeeting.end
                 }
             }
             return meeting;
@@ -82,7 +81,7 @@ export const Calendar = () => {
                 return {
                     ...meeting,
                     start: newMeeting.start,
-                  
+                    end: newMeeting.end
                 }
             }
             return meeting;
@@ -136,7 +135,7 @@ export const Calendar = () => {
                         <div>
                             <h3>Detajet e Takimit</h3>
                             <p><strong>Fillo:</strong> {event.start.toLocaleString()}</p>
-                       
+                            <p><strong>Përfundo:</strong> {event.end.toLocaleString()}</p>
                             {
                                 event.clients.map((client, index) => {
                                     return <p key={index}><strong>Klienti {index+1}:</strong> {client}</p>
@@ -151,7 +150,7 @@ export const Calendar = () => {
                         _id: newEvent._id,
                         clients: newEvent.clients,
                         start: newEvent.start,
-                 
+                        end: newEvent.end,
                         color: newEvent.color,
                         event_id: newEvent.event_id,
                     });
