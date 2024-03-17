@@ -136,7 +136,7 @@ export const Calendar = () => {
                         <div>
                             <h3>Detajet e Takimit</h3>
                             <p><strong>Fillo:</strong> {event.start.toLocaleString()}</p>
-                            <p><strong>Përfundo:</strong> {event.end.toLocaleString()}</p>
+                       
                             {
                                 event.clients.map((client, index) => {
                                     return <p key={index}><strong>Klienti {index+1}:</strong> {client}</p>
