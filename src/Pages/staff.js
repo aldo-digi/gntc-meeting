@@ -253,7 +253,6 @@ const Staff = () => {
                                 <TableCell>{index+1}</TableCell>
                                 <TableCell>{row.name}</TableCell>
                                 <TableCell>{row.company}</TableCell>
-                                <TableCell>{row.city}</TableCell>
                                     <TableCell>{row.email}</TableCell>
                                     <TableCell>{row.phoneNumber}</TableCell>
                                 <TableCell>
