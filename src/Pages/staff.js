@@ -1,6 +1,9 @@
 import {useState, useContext, useEffect} from 'react';
 import {useNavigate} from "react-router-dom";
 
+import Edit from '../Assets/edit.png'
+import Delete from '../Assets/delete.png'
+
 import {
     Container,
     TableContainer,
@@ -24,6 +27,8 @@ import {SideBar} from "../Components/sideBar"; // Import axios for HTTP requests
 
 import { useClient } from '../Components/ClientContext';
 import MenuIcon from "@mui/icons-material/Menu";
+
+
 
 
 
@@ -258,8 +263,10 @@ const Staff = () => {
                                     <TableCell>{row.email}</TableCell>
                                     <TableCell>{row.phoneNumber}</TableCell>
                                 <TableCell>
-                                    <Button variant="outlined" color="primary" onClick={()=>handleEditClient(index)} >Edito</Button>
-                                    <Button variant="outlined" color="error" style={{ marginLeft: '8px' }} onClick={() => handleDeleteClient(index)}>Fshij</Button>
+                                   
+
+                                    <img onClick={()=>handleEditClient(index)} src={Edit} className='w-5 h-5 transition-all duration-200 cursor-pointer hover:scale-125' />
+                                        <img onClick={() => handleDeleteClient(index)} src={Delete} className='w-5 h-5 transition-all duration-200 cursor-pointer hover:scale-125' />
                                 </TableCell>
                             </TableRow>
 
