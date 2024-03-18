@@ -196,7 +196,7 @@ export const Calendar = () => {
                                             backgroundColor: 'gray', color: 'white', margin: 5
                                         }}>Jo Prezent</Button>
                                 <p><strong>Përshkrimi:</strong> {event.title}</p>
-                                <p><strong>Kompania:</strong> {event.title}</p>
+                                <p><strong>Kompania:</strong> {event.company}</p>
                                 <p><strong>Fillo:</strong> {event.start.toLocaleString()}</p>
                                 {
                                     event.clients.map((client, index) => {
