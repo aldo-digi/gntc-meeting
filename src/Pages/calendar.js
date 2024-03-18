@@ -4,7 +4,7 @@ import {Button, Container, IconButton, useMediaQuery, useTheme} from "@mui/mater
 import {SideBar} from "../Components/sideBar";
 import {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
-
+import BlobIcon from '../Assets/blob.png'
 import { useClient } from '../Components/ClientContext';
 import axios from "axios";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -113,10 +113,16 @@ export const Calendar = () => {
         <div style={!isMobile? {
             marginLeft: 250,
             transition: 'margin-left 0.5s',
-            padding: '20px'
+            padding: '20px',
         }:{
 
         }}>
+            <img style={{
+                position: 'absolute',
+                bottom: -200,
+                right: -100,
+                zIndex: -1,
+            }} src={BlobIcon} height={700} width={700} />
             {isMobile && <IconButton
                 onClick={() => setOpen(true)}
                 style={{}}
