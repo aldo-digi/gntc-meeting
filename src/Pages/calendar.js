@@ -190,11 +190,11 @@ export const Calendar = () => {
                                 }}
                                         style={event.approve!='true'?{backgroundColor: 'green', color: 'white', margin: 5}:{
                                             backgroundColor: 'gray', color: 'white', margin: 5
-                                        }}>Aprovo</Button>
+                                        }}>Prezent</Button>
                                 <Button disabled={event.approve=='false'} onClick={() => disApproveMeeting(event._id)}
                                         style={event.approve!='false'?{backgroundColor: 'red', color: 'white', margin: 5}:{
                                             backgroundColor: 'gray', color: 'white', margin: 5
-                                        }}>Mos Aprovo</Button>
+                                        }}>Jo Prezent</Button>
                                 <p><strong>Title:</strong> {event.title}</p>
                                 <p><strong>Fillo:</strong> {event.start.toLocaleString()}</p>
                                 {
