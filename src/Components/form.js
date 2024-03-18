@@ -64,7 +64,7 @@ export const Form = ({ scheduler, updateMeeting }) => {
             padding: 20,
         }}>
             <TextField
-                label="Title"
+                label="Përshkrimi"
                 name="title"
                 value={formData.title}
                 onChange={handleChange}
