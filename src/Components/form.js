@@ -52,7 +52,7 @@ export const Form = ({ scheduler, updateMeeting }) => {
             end: newMeeting.end,
             clients: newMeeting.clients,
             color: newMeeting.color,
-            title:newMeeting.title
+            title:newMeeting.title,
         });
     }
 
@@ -108,9 +108,7 @@ export const Form = ({ scheduler, updateMeeting }) => {
                 <Button variant="contained" color="error" onClick={scheduler.close}>Cancel</Button>
                 <Button variant="contained" color="primary" onClick={async () => {
                     const { randomUUID } = new ShortUniqueId({ length: 10 });
-                    const color = randomColor({
-                        luminosity: 'dark',
-                    });
+                    const color = '#BA7309'
                     const start = formData.start ? new Date(formData.start) : null;
                     const end = new Date(start);
                     end.setHours(end.getHours() + 1);
@@ -123,6 +121,7 @@ export const Form = ({ scheduler, updateMeeting }) => {
                         title: formData.title,
                         clients: selectedEmails,
                         color: color,
+                        approve:'none'
                     };
 
                     if (!event) {
