@@ -25,8 +25,7 @@ import {SideBar} from "../Components/sideBar"; // Import axios for HTTP requests
 import { useClient } from '../Components/ClientContext';
 import MenuIcon from "@mui/icons-material/Menu";
 import Button from '@mui/material/Button';
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
+
 
 
 
@@ -259,8 +258,8 @@ const Staff = () => {
                                     <TableCell>{row.email}</TableCell>
                                     <TableCell>{row.phoneNumber}</TableCell>
                                 <TableCell>
-                                    <Button variant="outlined" color="primary" onClick={()=>handleEditClient(index)} ><EditIcon /></Button>
-                                    <Button variant="outlined" color="error" style={{ marginLeft: '8px' }} onClick={() => handleDeleteClient(index)}><DeleteIcon /> </Button>
+                                    <Button variant="outlined" color="primary" onClick={()=>handleEditClient(index)} ><Edito></Button>
+                                    <Button variant="outlined" color="error" style={{ marginLeft: '8px' }} onClick={() => handleDeleteClient(index)}><Fshij> </Button>
                                 </TableCell>
                             </TableRow>
 
