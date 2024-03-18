@@ -242,7 +242,6 @@ const Staff = () => {
                                 <TableCell>ID-ja e Stafit</TableCell>
                                 <TableCell>Emri</TableCell>
                                 <TableCell>Kompania</TableCell>
-                                <TableCell>Qyteti</TableCell>
                                 <TableCell>E-mail</TableCell>
                                 <TableCell>Numri i Telefonit</TableCell>
                                 <TableCell>Ndrysho</TableCell> {/* Added Position column */}
@@ -296,14 +295,7 @@ const Staff = () => {
                             value={formData.company}
                             onChange={handleInputChange}
                         />
-                        <TextField
-                            margin="dense"
-                            label="Qyteti"
-                            fullWidth
-                            name="city"
-                            value={formData.city}
-                            onChange={handleInputChange}
-                        />
+                     
                         <TextField
                             margin="dense"
                             label="E-mail"
