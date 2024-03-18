@@ -50,7 +50,7 @@ const LoginForm = () => {
             }}
         >
             <Typography component="h1" variant="h5" align="center">
-            Sign in
+            Agjenda e Takimeve
             </Typography>
             <Box component="form" noValidate sx={{ mt: 1 }}>
             <Grid container spacing={2}>
