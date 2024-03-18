@@ -195,11 +195,12 @@ export const Calendar = () => {
                                         style={event.approve!='false'?{backgroundColor: 'red', color: 'white', margin: 5}:{
                                             backgroundColor: 'gray', color: 'white', margin: 5
                                         }}>Jo Prezent</Button>
-                                <p><strong>Title:</strong> {event.title}</p>
+                                <p><strong>Përshkrimi:</strong> {event.title}</p>
+                                <p><strong>Kompania:</strong> {event.title}</p>
                                 <p><strong>Fillo:</strong> {event.start.toLocaleString()}</p>
                                 {
                                     event.clients.map((client, index) => {
-                                            return <p key={index}><strong>Klienti {index + 1}:</strong> {client}</p>
+                                            return <p key={index}><strong>Pjesmarësit:</strong> {client}</p>
                                         }
                                     )
                                 }
