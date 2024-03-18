@@ -8,6 +8,7 @@ import BlobIcon from '../Assets/blob.png'
 import {useClient} from '../Components/ClientContext';
 import axios from "axios";
 import MenuIcon from "@mui/icons-material/Menu";
+import {toast} from "react-toastify";
 
 export const Calendar = () => {
 
@@ -41,7 +42,9 @@ export const Calendar = () => {
                 start: new Date(meeting.start),
                 end: new Date(meeting.end),
                 color: meeting.approve==='none'?meeting.color:meeting.approve==='true'?'green':'red',
-                approve: meeting.approve
+                approve: meeting.approve,
+                createdBy: meeting.createdBy,
+                editedBy: meeting.editedBy
             }
         }));
         setMeetingsBackup(data.map((meeting) => {
@@ -53,7 +56,9 @@ export const Calendar = () => {
                 start: new Date(meeting.start),
                 end: new Date(meeting.end),
                 color: meeting.approve==='none'?meeting.color:meeting.approve==='true'?'green':'red',
-                approve: meeting.approve
+                approve: meeting.approve,
+                createdBy: meeting.createdBy,
+                editedBy: meeting.editedBy
             }
         }));
     }
@@ -157,10 +162,28 @@ export const Calendar = () => {
         getMeetings();
     }, [])
 
-    useEffect(() => {
-        console.log(meetings)
-    })
 
+    const checkTimeRemaining = () => {
+        const currentTime = new Date();
+        meetings.forEach((meeting) => {
+            const timeDifference = meeting.start - currentTime;
+            const minutesRemaining = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+            if (minutesRemaining === 10) {
+                // Show a toast
+                toast.warn(`Only 10 minutes remaining for the meeting: ${meeting.title}`, { variant: "info" });
+            }
+        });
+    };
+
+    useEffect(() => {
+        // Check time remaining every minute
+        const interval = setInterval(() => {
+            checkTimeRemaining();
+        }, 60000);
+
+        // Clear interval on component unmount
+        return () => clearInterval(interval);
+    }, []);
 
     return (
         <div style={!isMobile ? {
@@ -185,14 +208,22 @@ export const Calendar = () => {
                         return (
                             <div>
                                 <h3>Detajet e Takimit</h3>
-                                <Button disabled={event.approve=='true'} onClick={() => {
+                                <Button disabled={event.approve == 'true'} onClick={() => {
                                     approveMeeting(event._id)
                                 }}
-                                        style={event.approve!='true'?{backgroundColor: 'green', color: 'white', margin: 5}:{
+                                        style={event.approve != 'true' ? {
+                                            backgroundColor: 'green',
+                                            color: 'white',
+                                            margin: 5
+                                        } : {
                                             backgroundColor: 'gray', color: 'white', margin: 5
                                         }}>Prezent</Button>
-                                <Button disabled={event.approve=='false'} onClick={() => disApproveMeeting(event._id)}
-                                        style={event.approve!='false'?{backgroundColor: 'red', color: 'white', margin: 5}:{
+                                <Button disabled={event.approve == 'false'} onClick={() => disApproveMeeting(event._id)}
+                                        style={event.approve != 'false' ? {
+                                            backgroundColor: 'red',
+                                            color: 'white',
+                                            margin: 5
+                                        } : {
                                             backgroundColor: 'gray', color: 'white', margin: 5
                                         }}>Jo Prezent</Button>
                                 <p><strong>Përshkrimi:</strong> {event.title}</p>
@@ -204,6 +235,8 @@ export const Calendar = () => {
                                         }
                                     )
                                 }
+                                <p><strong>Created By:</strong> {event.createdBy}</p>
+                                {event.editedBy && <p><strong>Edited By:</strong> {event.editedBy}</p>}
                             </div>
                         );
                     }}
@@ -215,6 +248,7 @@ export const Calendar = () => {
                             end: newEvent.end,
                             color: newEvent.color,
                             event_id: newEvent.event_id,
+                            editedBy: localStorage.getItem('gntcuser')
                         });
                     }}
                     onDelete={async (event) => {

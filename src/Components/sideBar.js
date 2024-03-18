@@ -5,6 +5,7 @@ import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp'; // Import the ExitToAppIcon
 import logo from '../Assets/logo.png';
 import { useLocation, useNavigate, useRoutes } from "react-router-dom";
+import PersonIcon from '@mui/icons-material/Person';
 
 export const SideBar = ({ open, setOpen }) => {
     const theme = useTheme();
@@ -83,6 +84,18 @@ export const SideBar = ({ open, setOpen }) => {
                             </ListItemIcon>
                             <ListItemText primary='Personat' />
                         </ListItemButton>
+                    </ListItem>
+                </List>
+                <Divider />
+                <List sx={{ marginTop: 'auto' }}>
+                    <ListItem
+                        key="user"
+                        sx={{ borderRadius: 20 }}
+                    >
+                        <ListItemIcon>
+                            <PersonIcon />
+                        </ListItemIcon>
+                        <ListItemText primary={localStorage.getItem('gntcuser')} />
                     </ListItem>
                 </List>
                 <Divider />

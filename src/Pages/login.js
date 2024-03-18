@@ -22,7 +22,6 @@ const LoginForm = () => {
         try {
         const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/user/login`, formData);
         const user = response.data.user;
-        console.log(user);
         localStorage.setItem('gntcuser', JSON.stringify(user.email));
         localStorage.setItem('gntcuserrole', JSON.stringify(user.role));
 

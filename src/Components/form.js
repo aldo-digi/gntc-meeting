@@ -45,7 +45,6 @@ export const Form = ({ scheduler, updateMeeting }) => {
     };
 
     const addMeeting = async (newMeeting) => {
-        console.log(newMeeting)
         const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/meetings/add`, {
             event_id: newMeeting.event_id,
             start: newMeeting.start,
@@ -53,8 +52,16 @@ export const Form = ({ scheduler, updateMeeting }) => {
             clients: newMeeting.clients,
             color: newMeeting.color,
             title:newMeeting.title,
+            createdBy: newMeeting.createdBy
         });
     }
+
+    const getCompany = async (email) => {
+        const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/clients/get/${email}`);
+        return response.data.company;
+    }
+
+
 
     return (
         <form style={{
@@ -108,7 +115,13 @@ export const Form = ({ scheduler, updateMeeting }) => {
                 <Button variant="contained" color="error" onClick={scheduler.close}>Cancel</Button>
                 <Button variant="contained" color="primary" onClick={async () => {
                     const { randomUUID } = new ShortUniqueId({ length: 10 });
-                    const color = '#BA7309'
+                    const company = await getCompany(selectedEmails[0]);
+                    let color = '';
+                    if(company === 'GNTC Group') {
+                        color = '#EDED00'
+                    }else {
+                        color = '#ADD8E6'
+                    }
                     const start = formData.start ? new Date(formData.start) : null;
                     const end = new Date(start);
                     end.setHours(end.getHours() + 1);
@@ -121,7 +134,8 @@ export const Form = ({ scheduler, updateMeeting }) => {
                         title: formData.title,
                         clients: selectedEmails,
                         color: color,
-                        approve:'none'
+                        approve:'none',
+                        createdBy: localStorage.getItem('gntcuser')
                     };
 
                     if (!event) {

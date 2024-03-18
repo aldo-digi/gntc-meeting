@@ -1,14 +1,10 @@
-import logo from './logo.svg';
 import './App.css';
-import {Scheduler} from "@aldabil/react-scheduler";
-import {Button} from "@mui/material";
-import {useState} from "react";
-import {SideBar} from "./Components/sideBar";
 import {Calendar} from "./Pages/calendar";
 import Staff from "./Pages/staff";
 import Login from "./Pages/login";
 import {createBrowserRouter, RouterProvider, useNavigate} from "react-router-dom";
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { ClientProvider } from './Components/ClientContext';
 
 function App() {
@@ -35,6 +31,7 @@ function App() {
     return (
         <ClientProvider> {/* Wrap your entire application with the ClientProvider */}
             <>
+                <ToastContainer/>
             <RouterProvider router={router}></RouterProvider>
             </>
         </ClientProvider>
