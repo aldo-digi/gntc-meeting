@@ -50,7 +50,7 @@ const LoginForm = () => {
             }}
         >
             <Typography component="h1" variant="h5" align="center">
-            Sign in
+            Agjenda e Takimeve
             </Typography>
             <Box component="form" noValidate sx={{ mt: 1 }}>
             <Grid container spacing={2}>
@@ -58,7 +58,7 @@ const LoginForm = () => {
                 <TextField
                     fullWidth
                     id="email"
-                    label="Email Address"
+                    label="Email Adresa"
                     name="email"
                     autoComplete="email"
                     autoFocus
@@ -70,7 +70,7 @@ const LoginForm = () => {
                 <TextField
                     fullWidth
                     name="password"
-                    label="Password"
+                    label="Fjalëkalimi"
                     type="password"
                     id="password"
                     autoComplete="current-password"
@@ -87,7 +87,7 @@ const LoginForm = () => {
                 sx={{ mt: 3, mb: 2 }}
                 onClick={handleSubmit}
             >
-                Sign In
+               Kyçu
             </Button>
             </Box>
         </Box>

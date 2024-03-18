@@ -52,9 +52,9 @@ export const SideBar = ({ open, setOpen }) => {
                             mb: 2,
                             borderRadius: 20,
                             '&:hover': {
-                                backgroundColor: '#FFEE0D',
+                                backgroundColor: '#00cc00',
                             },
-                            backgroundColor: activeItem === 'kalendari' ? '#FFEE0D' : 'inherit',
+                            backgroundColor: activeItem === 'kalendari' ? '#00cc00' : 'inherit',
                         }}
                         disablePadding
                     >
@@ -71,9 +71,9 @@ export const SideBar = ({ open, setOpen }) => {
                             mb: 2,
                             borderRadius: 20,
                             '&:hover': {
-                                backgroundColor: '#FFEE0D',
+                                backgroundColor: '#00cc00',
                             },
-                            backgroundColor: activeItem === 'clients' ? '#FFEE0D' : 'inherit',
+                            backgroundColor: activeItem === 'clients' ? '#00cc00' : 'inherit',
                         }}
                         disablePadding
                     >
