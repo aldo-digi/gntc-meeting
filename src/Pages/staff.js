@@ -285,7 +285,7 @@ const Staff = () => {
                 />
                 {/* Add Client Form Dialog */}
                 <Dialog open={openForm} onClose={handleFormClose}>
-                    <DialogTitle>Add Client</DialogTitle>
+                    <DialogTitle>Shto Personin</DialogTitle>
                     <DialogContent>
                         <TextField
                             margin="dense"
