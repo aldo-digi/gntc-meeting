@@ -115,12 +115,6 @@ export const Calendar = () => {
         }:{
 
         }}>
-            <img style={{
-                position: 'absolute',
-                bottom: -200,
-                right: -100,
-                zIndex: -1,
-            }} src={BlobIcon} height={700} width={700} />
             {isMobile && <IconButton
                 onClick={() => setOpen(true)}
                 style={{}}

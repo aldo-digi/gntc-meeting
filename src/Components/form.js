@@ -22,6 +22,7 @@ export const Form = ({ scheduler, updateMeeting }) => {
 
     const [formData, setFormData] = useState({
         emails: [],
+        title:event ? event.title : '',
         start: scheduler.state.start.value || '',
         end: scheduler.state.end.value || '',
         date: event ? scheduler.state.start.value.toISOString().split('T')[0] : '',
@@ -44,15 +45,15 @@ export const Form = ({ scheduler, updateMeeting }) => {
     };
 
     const addMeeting = async (newMeeting) => {
-        console.log('add meeting test',newMeeting)
+        console.log(newMeeting)
         const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/meetings/add`, {
             event_id: newMeeting.event_id,
             start: newMeeting.start,
             end: newMeeting.end,
             clients: newMeeting.clients,
             color: newMeeting.color,
+            title:newMeeting.title
         });
-        console.log(response);
     }
 
     return (
@@ -62,6 +63,12 @@ export const Form = ({ scheduler, updateMeeting }) => {
             gap: 20,
             padding: 20,
         }}>
+            <TextField
+                label="Title"
+                name="title"
+                value={formData.title}
+                onChange={handleChange}
+                />
             <FormControl>
                 <InputLabel id='selectName'></InputLabel>
                 <Autocomplete
@@ -113,7 +120,7 @@ export const Form = ({ scheduler, updateMeeting }) => {
                         event_id: randomUUID(),
                         start: start,
                         end: end,
-                        title: selectedEmails.length>1 ? `${selectedEmails[0]} and more` : selectedEmails[0],
+                        title: formData.title,
                         clients: selectedEmails,
                         color: color,
                     };
