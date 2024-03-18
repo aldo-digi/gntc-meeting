@@ -29,15 +29,18 @@ export const Calendar = () => {
     const [meetingsBackup, setMeetingsBackup] = useState([]);
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+    const [companyCheck, setCompanyCheck] = useState(null);
 
     const getMeetings = async () => {
         const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/meetings/get`);
         const data = await response.json();
-        setMeetings(data.map((meeting) => {
-            return {
+
+        const meetings = []
+        for (const meeting of data) {
+            meetings.push({
                 _id: meeting._id,
-                title: meeting.title,
                 event_id: meeting.event_id,
+                title: meeting.title,
                 clients: meeting.clients,
                 start: new Date(meeting.start),
                 end: new Date(meeting.end),
@@ -45,8 +48,10 @@ export const Calendar = () => {
                 approve: meeting.approve,
                 createdBy: meeting.createdBy,
                 editedBy: meeting.editedBy
-            }
-        }));
+            })
+        }
+        setMeetings(meetings);
+
         setMeetingsBackup(data.map((meeting) => {
             return {
                 _id: meeting._id,
@@ -61,7 +66,26 @@ export const Calendar = () => {
                 editedBy: meeting.editedBy
             }
         }));
+
+        setCompanyCheck(false)
     }
+
+    const getCompanies = async () => {
+        for(var i=0; i<meetings.length; i++){
+            const company = await getCompany(meetings[i].clients[0]);
+            meetingsBackup[i].company = company;
+            meetings[i].company = company;
+        }
+        setMeetings(meetings);
+        setMeetingsBackup(meetingsBackup);
+        setCompanyCheck(true)
+    }
+
+    useEffect(() => {
+        if (meetings.length > 0 && companyCheck === false) {
+            getCompanies();
+        }
+    }, [companyCheck]);
 
     const updateMeeting = async (newMeeting) => {
         const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/meetings/update/${newMeeting._id}`, {
@@ -184,6 +208,12 @@ export const Calendar = () => {
         // Clear interval on component unmount
         return () => clearInterval(interval);
     }, []);
+
+    const getCompany = async (email) => {
+        const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/clients/get/${email}`);
+        return response.data.company;
+    }
+
 
     return (
         <div style={!isMobile ? {
