@@ -265,8 +265,8 @@ const Staff = () => {
                                 <TableCell>
                                    
 
-                                    <img onClick={()=>handleEditClient(index)} src={Edit} className='w-5 h-5 transition-all duration-200 cursor-pointer hover:scale-125' />
-                                        <img onClick={() => handleDeleteClient(index)} src={Delete} className='w-5 h-5 transition-all duration-200 cursor-pointer hover:scale-125' />
+                                    <img onClick={()=>handleEditClient(index)} src={Edit} className='w-5 h-5 mx-2 transition-all duration-200 cursor-pointer hover:scale-125' />
+                                        <img onClick={() => handleDeleteClient(index)} src={Delete} className='w-5 h-5 mx-2  transition-all duration-200 cursor-pointer hover:scale-125' />
                                 </TableCell>
                             </TableRow>
 
