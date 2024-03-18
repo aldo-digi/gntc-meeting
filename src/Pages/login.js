@@ -83,7 +83,7 @@ const LoginForm = () => {
                 type="submit"
                 fullWidth
                 variant="contained"
-                 color="#00cc00"
+                color="primary"
                 sx={{ mt: 3, mb: 2 }}
                 onClick={handleSubmit}
             >
