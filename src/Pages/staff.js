@@ -206,7 +206,7 @@ const Staff = () => {
                     justifyContent: 'space-between',
                     alignItems: 'center',
                 }}>
-                    <h1>Stafi</h1>
+                    <h1>Personat</h1>
                     <div style={{
                         display: 'flex',
                         gap: 20,
