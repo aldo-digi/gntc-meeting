@@ -37,7 +37,6 @@ export const Calendar = () => {
             return {
                 _id: meeting._id,
                 event_id: meeting.event_id,
-                title: meeting.clients.length>1 ? meeting.clients.join(', ') : meeting.clients[0],
                 clients: meeting.clients,
                 start: new Date(meeting.start),
                 end: new Date(meeting.end),
@@ -48,7 +47,6 @@ export const Calendar = () => {
             return {
                 _id: meeting._id,
                 event_id: meeting.event_id,
-                title: meeting.clients.length>1 ? meeting.clients.join(', ') : meeting.clients[0],
                 clients: meeting.clients,
                 start: new Date(meeting.start),
                 end: new Date(meeting.end),
@@ -140,12 +138,12 @@ export const Calendar = () => {
                     return (
                         <div>
                             <h3>Detajet e Takimit</h3>
+                            <p><strong>Title:</strong> {event.title}</p>
                             <p><strong>Fillo:</strong> {event.start.toLocaleString()}</p>
-                            <p><strong>Përfundo:</strong> {event.end.toLocaleString()}</p>
                             {
                                 event.clients.map((client, index) => {
-                                    return <p key={index}><strong>Klienti {index+1}:</strong> {client}</p>
-                                }
+                                        return <p key={index}><strong>Klienti {index + 1}:</strong> {client}</p>
+                                    }
                                 )
                             }
                         </div>
