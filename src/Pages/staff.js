@@ -241,7 +241,7 @@ const Staff = () => {
                     <Table>
                         <TableHead>
                             <TableRow>
-                                <TableCell>ID-ja e Stafit</TableCell>
+                                <TableCell>Nr</TableCell>
                                 <TableCell>Emri</TableCell>
                                 <TableCell>Kompania</TableCell>
                                 <TableCell>E-mail</TableCell>
