@@ -81,7 +81,7 @@ export const SideBar = ({ open, setOpen }) => {
                             <ListItemIcon>
                                 <PeopleAltIcon />
                             </ListItemIcon>
-                            <ListItemText primary='Stafi' />
+                            <ListItemText primary='Personat' />
                         </ListItemButton>
                     </ListItem>
                 </List>
