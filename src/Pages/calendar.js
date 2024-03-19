@@ -43,6 +43,7 @@ export const Calendar = () => {
                 title: meeting.title,
                 clients: meeting.clients,
                 start: new Date(meeting.start),
+                end: new Date(meeting.end),
                 color: meeting.approve==='none'?meeting.color:meeting.approve==='true'?'green':'red',
                 approve: meeting.approve,
                 createdBy: meeting.createdBy,
@@ -58,6 +59,7 @@ export const Calendar = () => {
                 title: meeting.title,
                 clients: meeting.clients,
                 start: new Date(meeting.start),
+                end: new Date(meeting.end),
                 color: meeting.approve==='none'?meeting.color:meeting.approve==='true'?'green':'red',
                 approve: meeting.approve,
                 createdBy: meeting.createdBy,
@@ -99,6 +101,7 @@ export const Calendar = () => {
                 return {
                     ...meeting,
                     start: newMeeting.start,
+                    end: newMeeting.end
                 }
             }
             return meeting;
@@ -108,6 +111,7 @@ export const Calendar = () => {
                 return {
                     ...meeting,
                     start: newMeeting.start,
+                    end: newMeeting.end
                 }
             }
             return meeting;
@@ -218,4 +222,102 @@ export const Calendar = () => {
             padding: '20px',
         } : {}}>
             {isMobile && <IconButton
-                onClick={() => setOpen
+                onClick={() => setOpen(true)}
+                style={{}}
+            >
+                <MenuIcon/>
+            </IconButton>}
+            <SideBar open={open} setOpen={setOpen}/>
+            <Container>
+                <h1>Agjenda Ditore e Takimeve</h1>
+                <Scheduler
+                    customEditor={(scheduler) => <Form scheduler={scheduler} updateMeeting={updateMeeting}/>}
+                    view="week"
+                    events={meetings}
+                    viewerExtraComponent={(fields, event) => {
+                        return (
+                            <div>
+                                <h3>Detajet e Takimit</h3>
+                                <Button disabled={event.approve == 'true'} onClick={() => {
+                                    approveMeeting(event._id)
+                                }}
+                                        style={event.approve != 'true' ? {
+                                            backgroundColor: 'green',
+                                            color: 'white',
+                                            margin: 5
+                                        } : {
+                                            backgroundColor: 'gray', color: 'white', margin: 5
+                                        }}>Prezent</Button>
+                                <Button disabled={event.approve == 'false'} onClick={() => disApproveMeeting(event._id)}
+                                        style={event.approve != 'false' ? {
+                                            backgroundColor: 'red',
+                                            color: 'white',
+                                            margin: 5
+                                        } : {
+                                            backgroundColor: 'gray', color: 'white', margin: 5
+                                        }}>Jo Prezent</Button>
+                                <p><strong>Përshkrimi:</strong> {event.title}</p>
+                                <p><strong>Kompania:</strong> {event.company}</p>
+                                <p><strong>Fillo:</strong> {event.start.toLocaleString()}</p>
+                                {
+                                    event.clients.map((client, index) => {
+                                            return <p key={index}><strong>Pjesmarësit:</strong> {client}</p>
+                                        }
+                                    )
+                                }
+                                <p><strong>Created By:</strong> {event.createdBy}</p>
+                                {event.editedBy && <p><strong>Edited By:</strong> {event.editedBy}</p>}
+                            </div>
+                        );
+                    }}
+                    onEventDrop={async (newDate, newEvent, oldEvent) => {
+                        await updateMeeting({
+                            _id: newEvent._id,
+                            clients: newEvent.clients,
+                            start: newEvent.start,
+                            end: newEvent.end,
+                            color: newEvent.color,
+                            event_id: newEvent.event_id,
+                            editedBy: localStorage.getItem('gntcuser')
+                        });
+                    }}
+                    onDelete={async (event) => {
+                        await deleteMeeting(event);
+                    }}
+                    translations={{
+                        navigation: {
+                            month: "Muaji",
+                            week: "Java",
+                            day: "Dita",
+                            today: "Sot",
+                            agenda: "Agjenda"
+                        },
+                        form: {
+                            addTitle: "Shto një Takim",
+                            editTitle: "Edito Takimin",
+                            confirm: "Konfirmo",
+                            delete: "Fshij",
+                            cancel: "Anulo"
+                        },
+                        event: {
+                            title: "Titulli",
+                            start: "Fillo",
+                            end: "Përfundo",
+                            allDay: "Gjithë ditën"
+                        },
+                        validation: {
+                            required: "Kërkohet",
+                            invalidEmail: "Email i pavlefshëm",
+                            onlyNumbers: "Vetëm numrat lejohen",
+                            min: "Minimumi {{min}} i shkronjav",
+                            max: "Maksimumi {{max}} i shkronjav"
+                        },
+                        moreEvents: "Më shumë...",
+                        noDataToDisplay: "Nuk ka të dhëna për t'u shfaqur",
+                        loading: "Loading..."
+                    }}
+                />
+            </Container>
+        </div>
+    )
+}
