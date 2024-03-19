@@ -194,7 +194,7 @@ export const Calendar = () => {
             const minutesRemaining = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
             if (minutesRemaining === 10) {
                 // Show a toast
-                toast.warn(`Only 10 minutes remaining for the meeting: ${meeting.title}`, { variant: "info" });
+                toast.warn(`Kanë mbetur vetëm 10 minuta për takimin: ${meeting.title}`, { variant: "info" });
             }
         });
     };
@@ -266,7 +266,7 @@ export const Calendar = () => {
                                     )
                                 }
                                 <p><strong>Created By:</strong> {event.createdBy}</p>
-                                {event.editedBy && <p><strong>Edited By:</strong> {event.editedBy}</p>}
+                                {event.editedBy && <p><strong>Edituar nga:</strong> {event.editedBy}</p>}
                             </div>
                         );
                     }}
