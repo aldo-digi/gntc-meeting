@@ -7,7 +7,6 @@ import axios from "axios";
 
 export const Form = ({ scheduler, updateMeeting }) => {
     const [users, setUsers] = useState([]);
-    const [selectedEmails, setSelectedEmails] = useState([]);
 
     const getClients = async () => {
         const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/clients/get`);
@@ -19,9 +18,12 @@ export const Form = ({ scheduler, updateMeeting }) => {
     }, []);
 
     const event = scheduler.edited;
+    const [selectedEmails, setSelectedEmails] = useState(event?event.clients:[]);
+
+    console.log(event)
 
     const [formData, setFormData] = useState({
-        emails: [],
+        emails: event? event.clients : [],
         title:event ? event.title : '',
         start: scheduler.state.start.value || '',
         end: scheduler.state.end.value || '',
@@ -61,8 +63,6 @@ export const Form = ({ scheduler, updateMeeting }) => {
         return response.data.company;
     }
 
-
-
     return (
         <form style={{
             display: 'flex',
@@ -93,14 +93,12 @@ export const Form = ({ scheduler, updateMeeting }) => {
                 />
             </FormControl>
             <TextField
-                label="Data"
                 type="date"
                 name="date"
                 value={formData.date}
                 onChange={handleChange}
             />
             <TextField
-                label="Koha"
                 type="time"
                 name="time"
                 value={formData.time}

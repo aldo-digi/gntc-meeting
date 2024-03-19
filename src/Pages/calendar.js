@@ -29,7 +29,7 @@ export const Calendar = () => {
     const [meetingsBackup, setMeetingsBackup] = useState([]);
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-    const [companyCheck, setCompanyCheck] = useState(null);
+    const [users, setUsers] = useState([]);
 
     const getMeetings = async () => {
         const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/meetings/get`);
@@ -66,26 +66,25 @@ export const Calendar = () => {
                 editedBy: meeting.editedBy
             }
         }));
-
-        setCompanyCheck(false)
     }
 
     const getCompanies = async () => {
         for(var i=0; i<meetings.length; i++){
-            const company = await getCompany(meetings[i].clients[0]);
+            const user = users.find((user) => user.email === meetings[i].clients[0])
+            const names = []
+            for(var j=0; j<meetings[i].clients.length; j++){
+                const user = users.find((user) => user.email === meetings[i].clients[j])
+                names.push(user.name)
+            }
+            const company =  user.company;
             meetingsBackup[i].company = company;
             meetings[i].company = company;
+            meetings[i].names = names;
+            meetingsBackup[i].names = names;
         }
-        setMeetings(meetings);
-        setMeetingsBackup(meetingsBackup);
-        setCompanyCheck(true)
+        setMeetings([...meetings]);
+        setMeetingsBackup([...meetingsBackup]);
     }
-
-    useEffect(() => {
-        if (meetings.length > 0 && companyCheck === false) {
-            getCompanies();
-        }
-    }, [companyCheck]);
 
     const updateMeeting = async (newMeeting) => {
         const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/meetings/update/${newMeeting._id}`, {
@@ -174,7 +173,6 @@ export const Calendar = () => {
         console.log(meetings, meetingsBackup)
         const response = await axios.delete(`${process.env.REACT_APP_BACKEND_URL}/meetings/delete/${id}`);
         if (response.status === 200) {
-            console.log(meetings)
             setMeetings(meetingsBackup.filter((meeting) => meeting.event_id !== id));
             setMeetingsBackup(meetingsBackup.filter((meeting) => meeting.event_id !== id));
         }
@@ -185,6 +183,8 @@ export const Calendar = () => {
     useEffect(() => {
         getMeetings();
     }, [])
+
+
 
 
     const checkTimeRemaining = () => {
@@ -209,11 +209,21 @@ export const Calendar = () => {
         return () => clearInterval(interval);
     }, []);
 
-    const getCompany = async (email) => {
-        const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/clients/get/${email}`);
-        return response.data.company;
+
+    const getClients = async () => {
+        const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/clients/get`);
+        setUsers(response.data);
     }
 
+    useEffect(() => {
+        getClients();
+    }, []);
+
+    useEffect(() => {
+        if(users.length>0 && meetings.length>0)
+           if(meetings[0].company===undefined)
+                getCompanies();
+    },[users,meetings])
 
     return (
         <div style={!isMobile ? {
@@ -234,6 +244,28 @@ export const Calendar = () => {
                     customEditor={(scheduler) => <Form scheduler={scheduler} updateMeeting={updateMeeting}/>}
                     view="week"
                     events={meetings}
+                    week={{
+                        startHour: 7,
+                        endHour: 21,
+                        step: 60,
+                    }}
+                    eventRenderer={({event,...props}) => {
+                        return (
+                            <div style={{
+                                display: 'flex',
+                                flexDirection: 'column',
+                                backgroundColor: event.color,
+                                borderRadius: 5,
+                                color: event.color==='#ADD8E6'? 'black':'white',
+                            }} {...props}>
+                                <p style={{
+                                    padding: 0,
+                                    margin:0,
+                                }}>{event.title}</p>
+                                <p>{event.start.toLocaleTimeString()}</p>
+                            </div>
+                        )
+                    }}
                     viewerExtraComponent={(fields, event) => {
                         return (
                             <div>
@@ -259,12 +291,7 @@ export const Calendar = () => {
                                 <p><strong>Përshkrimi:</strong> {event.title}</p>
                                 <p><strong>Kompania:</strong> {event.company}</p>
                                 <p><strong>Fillo:</strong> {event.start.toLocaleString()}</p>
-                                {
-                                    event.clients.map((client, index) => {
-                                            return <p key={index}><strong>Pjesmarësit:</strong> {client}</p>
-                                        }
-                                    )
-                                }
+                                <p><strong>Clients:</strong> {event.names.join(',')}</p>
                                 <p><strong>Created By:</strong> {event.createdBy}</p>
                                 {event.editedBy && <p><strong>Edituar nga:</strong> {event.editedBy}</p>}
                             </div>
@@ -278,6 +305,7 @@ export const Calendar = () => {
                             end: newEvent.end,
                             color: newEvent.color,
                             event_id: newEvent.event_id,
+                            title: newEvent.title,
                             editedBy: localStorage.getItem('gntcuser')
                         });
                     }}
