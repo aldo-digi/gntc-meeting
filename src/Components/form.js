@@ -116,7 +116,7 @@ export const Form = ({ scheduler, updateMeeting }) => {
                     const company = await getCompany(selectedEmails[0]);
                     let color = '';
                     if(company === 'GNTC Group') {
-                        color = '#EDED00'
+                        color = '#FEDD1F'
                     }else {
                         color = '#ADD8E6'
                     }
