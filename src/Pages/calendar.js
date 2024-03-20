@@ -267,6 +267,7 @@ export const Calendar = () => {
                         )
                     }}
                     viewerExtraComponent={(fields, event) => {
+                        console.log(event.names)
                         return (
                             <div>
                                 <h3>Detajet e Takimit</h3>
@@ -291,7 +292,7 @@ export const Calendar = () => {
                                 <p><strong>Përshkrimi:</strong> {event.title}</p>
                                 <p><strong>Kompania:</strong> {event.company}</p>
                                 <p><strong>Fillo:</strong> {event.start.toLocaleString()}</p>
-                                <p><strong>Clients:</strong> {event.names.join(',')}</p>
+                                <p><strong>Clients:</strong> {event.names ? event?.names?.join(','): ""}</p>
                                 <p><strong>Created By:</strong> {event.createdBy}</p>
                                 {event.editedBy && <p><strong>Edituar nga:</strong> {event.editedBy}</p>}
                             </div>

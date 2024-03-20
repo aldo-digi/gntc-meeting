@@ -25,8 +25,6 @@ const LoginForm = () => {
         localStorage.setItem('gntcuser', JSON.stringify(user.email));
         localStorage.setItem('gntcuserrole', JSON.stringify(user.role));
 
-        console.log(localStorage.user);
-        console.log(localStorage.role);
         navigate('/kalendari')
         
         } catch (error) {
