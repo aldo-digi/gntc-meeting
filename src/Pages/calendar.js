@@ -292,8 +292,8 @@ export const Calendar = () => {
                                 <p><strong>Përshkrimi:</strong> {event.title}</p>
                                 <p><strong>Kompania:</strong> {event.company}</p>
                                 <p><strong>Fillo:</strong> {event.start.toLocaleString()}</p>
-                                <p><strong>Clients:</strong> {event.names ? event?.names?.join(','): ""}</p>
-                                <p><strong>Created By:</strong> {event.createdBy}</p>
+                                <p><strong>Pjesmarrësit:</strong> {event.names ? event?.names?.join(','): ""}</p>
+                                <p><strong>Krijuar nga:</strong> {event.createdBy}</p>
                                 {event.editedBy && <p><strong>Edituar nga:</strong> {event.editedBy}</p>}
                             </div>
                         );
