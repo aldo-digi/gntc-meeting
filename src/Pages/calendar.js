@@ -255,16 +255,18 @@ export const Calendar = () => {
                             <div style={{
                                 display: 'flex',
                                 flexDirection: 'column',
-                                backgroundColor: event.color,
+                                backgroundColor: 'green',
                                 borderRadius: 5,
-                                margin:2,
-                                color: event.color==='#ADD8E6'? 'black':'black',
+                                color: event.color === '#ADD8E6' ? 'black' : 'black',
                             }} {...props}>
                                 <p style={{
-                                    padding: 0,
+                                    backgroundColor: event.color,
+                                    fontSize: 12,
                                     margin:0,
+                                    padding:2,
+                                }}>{event.start.toLocaleTimeString()}</p>
+                                <p style={{
                                 }}>{event.title}</p>
-                                <p>{event.start.toLocaleTimeString()}</p>
                             </div>
                         )
                     }}
