@@ -95,6 +95,9 @@ export const Form = ({ scheduler, updateMeeting }) => {
             <TextField
                 type="date"
                 name="date"
+                inputProps={{
+                    min: new Date().toDateString(),
+                }}
                 value={formData.date}
                 onChange={handleChange}
             />

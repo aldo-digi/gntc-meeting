@@ -243,6 +243,7 @@ export const Calendar = () => {
                 <Scheduler
                     customEditor={(scheduler) => <Form scheduler={scheduler} updateMeeting={updateMeeting}/>}
                     view="week"
+                    hourFormat="24"
                     events={meetings}
                     week={{
                         startHour: 7,
@@ -256,6 +257,7 @@ export const Calendar = () => {
                                 flexDirection: 'column',
                                 backgroundColor: event.color,
                                 borderRadius: 5,
+                                margin:2,
                                 color: event.color==='#ADD8E6'? 'black':'black',
                             }} {...props}>
                                 <p style={{
@@ -267,7 +269,6 @@ export const Calendar = () => {
                         )
                     }}
                     viewerExtraComponent={(fields, event) => {
-                        console.log(event.names)
                         return (
                             <div>
                                 <h3>Detajet e Takimit</h3>
@@ -291,7 +292,7 @@ export const Calendar = () => {
                                         }}>Jo Prezent</Button>
                                 <p><strong>Përshkrimi:</strong> {event.title}</p>
                                 <p><strong>Kompania:</strong> {event.company}</p>
-                                <p><strong>Fillo:</strong> {event.start.toLocaleString()}</p>
+                                <p><strong>Fillo:</strong> {event.start.toLocaleDateString('en-GB')}</p>
                                 <p><strong>Pjesmarrësit:</strong> {event.names ? event?.names?.join(','): ""}</p>
                                 <p><strong>Krijuar nga:</strong> {event.createdBy}</p>
                                 {event.editedBy && <p><strong>Edituar nga:</strong> {event.editedBy}</p>}
