@@ -44,7 +44,7 @@ export const Calendar = () => {
                 clients: meeting.clients,
                 start: new Date(meeting.start),
                 end: new Date(meeting.end),
-                color: meeting.approve==='none'?meeting.color:meeting.approve==='true'?'green':'red',
+                color: meeting.color,
                 approve: meeting.approve,
                 createdBy: meeting.createdBy,
                 editedBy: meeting.editedBy
@@ -60,7 +60,7 @@ export const Calendar = () => {
                 clients: meeting.clients,
                 start: new Date(meeting.start),
                 end: new Date(meeting.end),
-                color: meeting.approve==='none'?meeting.color:meeting.approve==='true'?'green':'red',
+                color: meeting.color,
                 approve: meeting.approve,
                 createdBy: meeting.createdBy,
                 editedBy: meeting.editedBy
@@ -255,12 +255,12 @@ export const Calendar = () => {
                             <div style={{
                                 display: 'flex',
                                 flexDirection: 'column',
-                                backgroundColor: 'green',
+                                backgroundColor: event.color,
                                 borderRadius: 5,
                                 color: event.color === '#ADD8E6' ? 'black' : 'black',
                             }} {...props}>
                                 <p style={{
-                                    backgroundColor: event.color,
+                                    backgroundColor: event.approve==='none'?'gray':event.approve==='true'?'green':'red',
                                     fontSize: 12,
                                     margin:0,
                                     padding:2,
