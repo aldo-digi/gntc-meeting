@@ -10,7 +10,7 @@ import axios from "axios";
 import MenuIcon from "@mui/icons-material/Menu";
 import {toast} from "react-toastify";
 
-export const Calendar = () => {
+export const History = () => {
 
     const navigate = useNavigate()
 
@@ -221,7 +221,7 @@ export const Calendar = () => {
 
     useEffect(() => {
         if(users.length>0 && meetings.length>0)
-           if(meetings[0].company===undefined)
+            if(meetings[0].company===undefined)
                 getCompanies();
     },[users,meetings])
 
@@ -239,23 +239,21 @@ export const Calendar = () => {
             </IconButton>}
             <SideBar open={open} setOpen={setOpen}/>
             <Container>
-                <h1>Agjenda Ditore e Takimeve</h1>
+                <h1>History</h1>
+                <div>
+
+                </div>
                 <Scheduler
                     customEditor={(scheduler) => <Form scheduler={scheduler} updateMeeting={updateMeeting}/>}
-                    view="week"
+                    view="day"
                     hourFormat="24"
                     events={meetings}
-                    week={{
-                        startHour: 7,
-                        endHour: 24,
-                        step: 60,
-                    }}
                     day={{
                         startHour: 7,
                         endHour: 24,
                         step: 60,
                     }}
-                    eventRenderer={({event,...props}) => {
+                    eventRenderer={({event, ...props}) => {
                         return (
                             <div style={{
                                 display: 'flex',
@@ -265,15 +263,14 @@ export const Calendar = () => {
                                 color: event.color === '#ADD8E6' ? 'black' : 'black',
                             }} {...props}>
                                 <p style={{
-                                    backgroundColor: event.approve==='none'?'gray':event.approve==='true'?'green':'red',
+                                    backgroundColor: event.approve === 'none' ? 'gray' : event.approve === 'true' ? 'green' : 'red',
                                     fontSize: 12,
-                                    margin:0,
-                                    padding:2,
-                                    color:'white',
+                                    margin: 0,
+                                    padding: 2,
+                                    color: 'white',
                                     fontWeight: 'bold',
                                 }}>{event.start.toLocaleTimeString()}</p>
-                                <p style={{
-                                }}>{event.title}</p>
+                                <p style={{}}>{event.title}</p>
                             </div>
                         )
                     }}
@@ -302,7 +299,7 @@ export const Calendar = () => {
                                 <p><strong>Përshkrimi:</strong> {event.title}</p>
                                 <p><strong>Kompania:</strong> {event.company}</p>
                                 <p><strong>Fillo:</strong> {event.start.toLocaleDateString('en-GB')}</p>
-                                <p><strong>Pjesmarrësit:</strong> {event.names ? event?.names?.join(','): ""}</p>
+                                <p><strong>Pjesmarrësit:</strong> {event.names ? event?.names?.join(',') : ""}</p>
                                 <p><strong>Krijuar nga:</strong> {event.createdBy}</p>
                                 {event.editedBy && <p><strong>Edituar nga:</strong> {event.editedBy}</p>}
                             </div>

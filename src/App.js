@@ -6,6 +6,7 @@ import {createBrowserRouter, RouterProvider, useNavigate} from "react-router-dom
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { ClientProvider } from './Components/ClientContext';
+import {History} from "./Pages/history";
 
 function App() {
 
@@ -25,6 +26,10 @@ function App() {
         {
             path: '/login',
             element: <Login />
+        },
+        {
+            path: '/history',
+            element: <History />
         }
     ])
 

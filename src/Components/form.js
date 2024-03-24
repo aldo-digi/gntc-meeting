@@ -4,6 +4,7 @@ import { useClient } from "./ClientContext";
 import ShortUniqueId from "short-unique-id";
 import randomColor from 'randomcolor';
 import axios from "axios";
+import {toast} from "react-toastify";
 
 export const Form = ({ scheduler, updateMeeting }) => {
     const [users, setUsers] = useState([]);
@@ -19,8 +20,6 @@ export const Form = ({ scheduler, updateMeeting }) => {
 
     const event = scheduler.edited;
     const [selectedEmails, setSelectedEmails] = useState(event?event.clients:[]);
-
-    console.log(event)
 
     const [formData, setFormData] = useState({
         emails: event? event.clients : [],
@@ -47,6 +46,7 @@ export const Form = ({ scheduler, updateMeeting }) => {
     };
 
     const addMeeting = async (newMeeting) => {
+
         const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/meetings/add`, {
             event_id: newMeeting.event_id,
             start: newMeeting.start,
@@ -62,6 +62,8 @@ export const Form = ({ scheduler, updateMeeting }) => {
         const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/clients/get/${email}`);
         return response.data.company;
     }
+
+    // const
 
     return (
         <form style={{
@@ -136,8 +138,15 @@ export const Form = ({ scheduler, updateMeeting }) => {
                         clients: selectedEmails,
                         color: color,
                         approve:'none',
+                        company: company,
                         createdBy: localStorage.getItem('gntcuser')
                     };
+
+
+                    if(new Date(newEvent.start) < new Date()) {
+                        toast.error('Ju nuk mund të krijojnë një takim përpara datës së sotme');
+                        return;
+                    }
 
                     if (!event) {
                         await addMeeting(newEvent)
@@ -147,6 +156,8 @@ export const Form = ({ scheduler, updateMeeting }) => {
                             _id: event._id
                         })
                     }
+
+
                     scheduler.onConfirm(newEvent, event ? "edit" : "create");
                     scheduler.close();
                 }}>Ruaj</Button>

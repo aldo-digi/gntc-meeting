@@ -6,6 +6,7 @@ import ExitToAppIcon from '@mui/icons-material/ExitToApp'; // Import the ExitToA
 import logo from '../Assets/logo.png';
 import { useLocation, useNavigate, useRoutes } from "react-router-dom";
 import PersonIcon from '@mui/icons-material/Person';
+import HistoryIcon from '@mui/icons-material/History';
 
 export const SideBar = ({ open, setOpen }) => {
     const theme = useTheme();
@@ -83,6 +84,25 @@ export const SideBar = ({ open, setOpen }) => {
                                 <PeopleAltIcon />
                             </ListItemIcon>
                             <ListItemText primary='Personat' />
+                        </ListItemButton>
+                    </ListItem>
+                    <ListItem
+                        key='history'
+                        sx={{
+                            mb: 2,
+                            borderRadius: 20,
+                            '&:hover': {
+                                backgroundColor: '#00cc00',
+                            },
+                            backgroundColor: activeItem === 'history' ? '#00cc00' : 'inherit',
+                        }}
+                        disablePadding
+                    >
+                        <ListItemButton onClick={() => handleItemClick('history')}>
+                            <ListItemIcon>
+                                <HistoryIcon />
+                            </ListItemIcon>
+                            <ListItemText primary='Historia' />
                         </ListItemButton>
                     </ListItem>
                 </List>

@@ -22,7 +22,8 @@ const LoginForm = () => {
         try {
         const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/user/login`, formData);
         const user = response.data.user;
-        localStorage.setItem('gntcuser', JSON.stringify(user.email));
+        localStorage.setItem('gntcuser', JSON.stringify(user.name));
+            localStorage.setItem('gntcuseremail', JSON.stringify(user.email));
         localStorage.setItem('gntcuserrole', JSON.stringify(user.role));
 
         navigate('/kalendari')
