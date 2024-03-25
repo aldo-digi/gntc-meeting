@@ -251,6 +251,15 @@ export const Calendar = () => {
                     view="week"
                     hourFormat="24"
                     events={meetings}
+                    viewerTitleComponent={(event) => {
+                        return (
+                            <div style={{
+                                color: 'black',
+                            }}>
+                                <h3>{event.title}</h3>
+                            </div>
+                        );
+                    }}
                     week={{
                         startHour: 7,
                         endHour: 24,
