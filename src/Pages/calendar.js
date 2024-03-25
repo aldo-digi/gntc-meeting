@@ -249,6 +249,7 @@ export const Calendar = () => {
                         startHour: 7,
                         endHour: 24,
                         step: 60,
+                        weekDays: [ 2, 3, 4, 5,6 ,0, 1  ],
                     }}
                     day={{
                         startHour: 7,
@@ -272,7 +273,7 @@ export const Calendar = () => {
                                     padding:2,
                                     color:'white',
                                     fontWeight: 'bold',
-                                }}>{event.start.toLocaleTimeString()}</p>
+                                }}>{event.start.toLocaleTimeString('en-US',{ hour: '2-digit', minute: '2-digit', hour12: false })}</p>
                                 <p style={{
                                 }}>{event.title}</p>
                             </div>
