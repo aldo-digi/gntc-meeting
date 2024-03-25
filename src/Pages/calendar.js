@@ -257,6 +257,12 @@ export const Calendar = () => {
                         step: 60,
                         weekDays: [ 2, 3, 4, 5,6 ,0, 1  ],
                     }}
+                    month={{
+                        startHour: 7,
+                        endHour: 24,
+                        step: 60,
+                        weekDays: [ 2, 3, 4, 5,6 ,0, 1  ],
+                    }}
                     day={{
                         startHour: 7,
                         endHour: 24,
