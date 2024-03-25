@@ -264,7 +264,7 @@ export const History = () => {
             </IconButton>}
             <SideBar open={open} setOpen={setOpen}/>
             <Container>
-                <h1>der me datën</h1>
+                <h1>Deri me datën</h1>
                 <div style={{
                     display: 'flex',
                     flexDirection: 'row',
