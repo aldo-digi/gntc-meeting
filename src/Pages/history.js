@@ -264,7 +264,7 @@ export const History = () => {
             </IconButton>}
             <SideBar open={open} setOpen={setOpen}/>
             <Container>
-                <h1>Deri me datën</h1>
+                <h1>Historia</h1>
                 <div style={{
                     display: 'flex',
                     flexDirection: 'row',
@@ -278,7 +278,7 @@ export const History = () => {
                     }}/>
                     <TextField sx={{
                         width: '300px'
-                    }}  label="der me datën" type="date" value={toDate.toISOString().split('T')[0]} onChange={(e)=> {
+                    }}  label="Deri me datën" type="date" value={toDate.toISOString().split('T')[0]} onChange={(e)=> {
                         setToDate(new Date(e.target.value))
                     }}
                     />
