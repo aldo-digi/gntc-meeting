@@ -35,6 +35,7 @@ export const History = () => {
     const [toDate,setToDate] = useState(new Date())
     const [fromDate,setFromDate] = useState(new Date())
     const [selectedFilter,setSelectedFilter] = useState('All')
+    const [search,setSearch] = useState('')
 
     const getMeetings = async () => {
         const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/meetings/get`);
@@ -273,6 +274,15 @@ export const History = () => {
                         width: '300px'
                     }}  label="To Date" type="date" value={toDate.toISOString().split('T')[0]} onChange={(e)=> {
                         setToDate(new Date(e.target.value))
+                    }}
+                    />
+                    <TextField sx={{
+                        width: '300px'
+                    }}  label="Search" value={search} onChange={(e)=> {
+                        setSearch(e.target.value)
+                        setMeetings(meetingsBackup.filter((meeting)=>{
+                            return meeting.title.toLowerCase().includes(e.target.value.toLowerCase())
+                        }))
                     }}
                     />
                     <div style={{
