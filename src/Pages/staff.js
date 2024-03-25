@@ -24,10 +24,10 @@ import {
 import AddIcon from '@mui/icons-material/Add';
 import axios from 'axios';
 import {SideBar} from "../Components/sideBar"; // Import axios for HTTP requests
-
+import EditIcon from '@mui/icons-material/Edit';
 import { useClient } from '../Components/ClientContext';
 import MenuIcon from "@mui/icons-material/Menu";
-
+import DeleteIcon from '@mui/icons-material/Delete';
 
 
 
@@ -264,10 +264,9 @@ const Staff = () => {
                                     <TableCell>{row.phoneNumber}</TableCell>
                                 <TableCell>
                                    
-
-                                    <img onClick={()=>handleEditClient(index)} src={Edit} className='w-5 h-5 mx-2 transition-all duration-200 cursor-pointer hover:scale-125' />
-                                        <img onClick={() => handleDeleteClient(index)} src={Delete} className='w-5 h-5 mx-2  transition-all duration-200 cursor-pointer hover:scale-125' />
-                                </TableCell>
+                                    <EditIcon onClick={()=>handleEditClient(index)} style={{cursor:'pointer'}}/>
+                                    <DeleteIcon color='error' onClick={()=>handleDeleteClient(index)} style={{cursor:'pointer'}}/>
+                                            </TableCell>
                             </TableRow>
 
                             ))}
