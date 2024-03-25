@@ -4,20 +4,7 @@ import React, { createContext, useContext, useState } from 'react';
 const ClientContext = createContext();
 
 export const ClientProvider = ({ children }) => {
-  const [clients, setClients] = useState([
-    {
-      name: 'John Doe',
-      company: 'ABC Company',
-      city: 'New York',
-      email: 'email@email.com',
-    },
-    {
-      name: 'Jane Doe',
-      company: 'XYZ Company',
-      city: 'Los Angeles',
-      email: 'email1@email.com',
-    },
-  ]);
+  const [clients, setClients] = useState([]);
 
   const updateClients = (newClient) => {
     setClients((prevClients) => [...prevClients, newClient]);

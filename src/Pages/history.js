@@ -75,14 +75,20 @@ export const History = () => {
     }
 
     const getCompanies = async () => {
-        for (var i = 0; i < meetings.length; i++) {
+        for(var i=0; i<meetings.length; i++){
             const user = users.find((user) => user.email === meetings[i].clients[0])
             const names = []
-            for (var j = 0; j < meetings[i].clients.length; j++) {
+            for(var j=0; j<meetings[i].clients.length; j++){
                 const user = users.find((user) => user.email === meetings[i].clients[j])
-                names.push(user.name)
+                if(user){
+                    names.push(user.name)
+                }
             }
-            const company = user.company;
+            let company = '';
+            if(user)
+                company =  user.company;
+            else
+                company = 'Nuk dihet';
             meetingsBackup[i].company = company;
             meetings[i].company = company;
             meetings[i].names = names;
@@ -258,7 +264,7 @@ export const History = () => {
             </IconButton>}
             <SideBar open={open} setOpen={setOpen}/>
             <Container>
-                <h1>History</h1>
+                <h1>der me datën</h1>
                 <div style={{
                     display: 'flex',
                     flexDirection: 'row',
@@ -267,18 +273,18 @@ export const History = () => {
                 }}>
                     <TextField sx={{
                         width: '300px'
-                    }} label="From Date" type="date" value={fromDate.toISOString().split('T')[0]} onChange={(e)=>{
+                    }} label="Prej datës" type="date" value={fromDate.toISOString().split('T')[0]} onChange={(e)=>{
                         setFromDate(new Date(e.target.value))
                     }}/>
                     <TextField sx={{
                         width: '300px'
-                    }}  label="To Date" type="date" value={toDate.toISOString().split('T')[0]} onChange={(e)=> {
+                    }}  label="der me datën" type="date" value={toDate.toISOString().split('T')[0]} onChange={(e)=> {
                         setToDate(new Date(e.target.value))
                     }}
                     />
                     <TextField sx={{
                         width: '300px'
-                    }}  label="Search" value={search} onChange={(e)=> {
+                    }}  label="Kërko" value={search} onChange={(e)=> {
                         setSearch(e.target.value)
                         setMeetings(meetingsBackup.filter((meeting)=>{
                             return meeting.title.toLowerCase().includes(e.target.value.toLowerCase())
@@ -308,7 +314,7 @@ export const History = () => {
                             border: '1px solid black'
                         }} onClick={()=>{
                             setSelectedFilter('All')
-                        }}>All</div>
+                        }}>TË GJITHA</div>
                         <div style={selectedFilter==='Approved'?{
                             padding:10,
                             borderRadius:10,
@@ -328,7 +334,7 @@ export const History = () => {
                             border: '1px solid black'
                         }} onClick={()=>{
                             setSelectedFilter('Approved')
-                        }}>Approved</div>
+                        }}>PREZENT</div>
                         <div style={selectedFilter==='Not Approved'?{
                             padding:10,
                             borderRadius:10,
@@ -348,7 +354,7 @@ export const History = () => {
                             border: '1px solid black'
                         }} onClick={()=>{
                             setSelectedFilter('Not Approved')
-                        }}>Not Approved</div>
+                        }}> JO PREZENT</div>
                     </div>
                 </div>
                 <div style={{
@@ -369,7 +375,8 @@ export const History = () => {
                                     display: 'flex',
                                     flexDirection: 'column',
                                     backgroundColor: event.color,
-                                    borderRadius: 5,
+                                    borderRadius: 10,
+                                    width: '50%',
                                     color: event.color === '#ADD8E6' ? 'black' : 'black',
                                 }}>
                                     <p style={{
@@ -378,6 +385,8 @@ export const History = () => {
                                         margin: 0,
                                         padding: 2,
                                         color: 'white',
+                                        borderTopLeftRadius: 10,
+                                        borderTopRightRadius: 10,
                                         fontWeight: 'bold',
                                     }}>{event.start.toLocaleTimeString()}</p>
                                     <p style={{
