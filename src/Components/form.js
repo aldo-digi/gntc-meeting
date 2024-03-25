@@ -160,6 +160,7 @@ export const Form = ({ scheduler, updateMeeting }) => {
 
                     scheduler.onConfirm(newEvent, event ? "edit" : "create");
                     scheduler.close();
+                    window.location.reload();
                 }}>Ruaj</Button>
             </div>
 

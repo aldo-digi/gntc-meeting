@@ -1,6 +1,6 @@
 import {Scheduler} from "@aldabil/react-scheduler";
 import {Form} from "../Components/form";
-import {Button, Container, IconButton, useMediaQuery, useTheme} from "@mui/material";
+import {Button, Container, IconButton, TextField, useMediaQuery, useTheme} from "@mui/material";
 import {SideBar} from "../Components/sideBar";
 import {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
@@ -9,6 +9,7 @@ import {useClient} from '../Components/ClientContext';
 import axios from "axios";
 import MenuIcon from "@mui/icons-material/Menu";
 import {toast} from "react-toastify";
+import {DatePicker} from "@mui/x-date-pickers";
 
 export const History = () => {
 
@@ -30,6 +31,10 @@ export const History = () => {
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
     const [users, setUsers] = useState([]);
+    const [openedEvent, setOpenedEvent] = useState(-1);
+    const [toDate,setToDate] = useState(new Date())
+    const [fromDate,setFromDate] = useState(new Date())
+    const [selectedFilter,setSelectedFilter] = useState('All')
 
     const getMeetings = async () => {
         const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/meetings/get`);
@@ -69,14 +74,14 @@ export const History = () => {
     }
 
     const getCompanies = async () => {
-        for(var i=0; i<meetings.length; i++){
+        for (var i = 0; i < meetings.length; i++) {
             const user = users.find((user) => user.email === meetings[i].clients[0])
             const names = []
-            for(var j=0; j<meetings[i].clients.length; j++){
+            for (var j = 0; j < meetings[i].clients.length; j++) {
                 const user = users.find((user) => user.email === meetings[i].clients[j])
                 names.push(user.name)
             }
-            const company =  user.company;
+            const company = user.company;
             meetingsBackup[i].company = company;
             meetings[i].company = company;
             meetings[i].names = names;
@@ -185,8 +190,6 @@ export const History = () => {
     }, [])
 
 
-
-
     const checkTimeRemaining = () => {
         const currentTime = new Date();
         meetings.forEach((meeting) => {
@@ -194,7 +197,7 @@ export const History = () => {
             const minutesRemaining = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
             if (minutesRemaining === 10) {
                 // Show a toast
-                toast.warn(`Kanë mbetur vetëm 10 minuta për takimin: ${meeting.title}`, { variant: "info" });
+                toast.warn(`Kanë mbetur vetëm 10 minuta për takimin: ${meeting.title}`, {variant: "info"});
             }
         });
     };
@@ -220,10 +223,25 @@ export const History = () => {
     }, []);
 
     useEffect(() => {
-        if(users.length>0 && meetings.length>0)
-            if(meetings[0].company===undefined)
+        if (users.length > 0 && meetings.length > 0)
+            if (meetings[0].company === undefined)
                 getCompanies();
-    },[users,meetings])
+    }, [users, meetings])
+
+    useEffect(()=>{
+        setMeetings(meetingsBackup.filter((meeting)=>{
+            return meeting.start >= fromDate && meeting.start <= toDate
+        }))
+    },[fromDate,toDate])
+
+    useEffect(() => {
+        setMeetings(meetingsBackup.filter((meeting)=>{
+            if(selectedFilter === 'All') return true
+            if(selectedFilter === 'Approved' && meeting.approve === 'true') return true
+            if(selectedFilter === 'Not Approved' && meeting.approve === 'false') return true
+            return false
+        }))
+    }, [selectedFilter]);
 
     return (
         <div style={!isMobile ? {
@@ -240,119 +258,156 @@ export const History = () => {
             <SideBar open={open} setOpen={setOpen}/>
             <Container>
                 <h1>History</h1>
-                <div>
-
+                <div style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    gap: 10,
+                    marginBottom:10,
+                }}>
+                    <TextField sx={{
+                        width: '300px'
+                    }} label="From Date" type="date" value={fromDate.toISOString().split('T')[0]} onChange={(e)=>{
+                        setFromDate(new Date(e.target.value))
+                    }}/>
+                    <TextField sx={{
+                        width: '300px'
+                    }}  label="To Date" type="date" value={toDate.toISOString().split('T')[0]} onChange={(e)=> {
+                        setToDate(new Date(e.target.value))
+                    }}
+                    />
+                    <div style={{
+                        display: 'flex',
+                        gap: 10,
+                        flexDirection: 'row'
+                    }}>
+                        <div style={selectedFilter=== 'All' ? {
+                            padding:10,
+                            borderRadius:10,
+                            display:'flex',
+                            justifyContent:'center',
+                            alignItems:'center',
+                            width: 50,
+                            backgroundColor: '#FEDD1F'
+                        }:{
+                            padding:10,
+                            borderRadius:10,
+                            display:'flex',
+                            justifyContent:'center',
+                            alignItems:'center',
+                            width: 50,
+                            border: '1px solid black'
+                        }} onClick={()=>{
+                            setSelectedFilter('All')
+                        }}>All</div>
+                        <div style={selectedFilter==='Approved'?{
+                            padding:10,
+                            borderRadius:10,
+                            display:'flex',
+                            justifyContent:'center',
+                            alignItems:'center',
+                            width: 100,
+                            backgroundColor: 'green',
+                            color:'white'
+                        }:{
+                            padding:10,
+                            borderRadius:10,
+                            display:'flex',
+                            justifyContent:'center',
+                            alignItems:'center',
+                            width: 100,
+                            border: '1px solid black'
+                        }} onClick={()=>{
+                            setSelectedFilter('Approved')
+                        }}>Approved</div>
+                        <div style={selectedFilter==='Not Approved'?{
+                            padding:10,
+                            borderRadius:10,
+                            display:'flex',
+                            justifyContent:'center',
+                            alignItems:'center',
+                            width: 120,
+                            backgroundColor: 'red',
+                            color:'white'
+                        }:{
+                            padding:10,
+                            borderRadius:10,
+                            display:'flex',
+                            justifyContent:'center',
+                            alignItems:'center',
+                            width: 120,
+                            border: '1px solid black'
+                        }} onClick={()=>{
+                            setSelectedFilter('Not Approved')
+                        }}>Not Approved</div>
+                    </div>
                 </div>
-                <Scheduler
-                    customEditor={(scheduler) => <Form scheduler={scheduler} updateMeeting={updateMeeting}/>}
-                    view="day"
-                    hourFormat="24"
-                    events={meetings}
-                    day={{
-                        startHour: 7,
-                        endHour: 24,
-                        step: 60,
-                    }}
-                    eventRenderer={({event, ...props}) => {
-                        return (
-                            <div style={{
-                                display: 'flex',
-                                flexDirection: 'column',
-                                backgroundColor: event.color,
-                                borderRadius: 5,
-                                color: event.color === '#ADD8E6' ? 'black' : 'black',
-                            }} {...props}>
-                                <p style={{
-                                    backgroundColor: event.approve === 'none' ? 'gray' : event.approve === 'true' ? 'green' : 'red',
-                                    fontSize: 12,
-                                    margin: 0,
-                                    padding: 2,
-                                    color: 'white',
-                                    fontWeight: 'bold',
-                                }}>{event.start.toLocaleTimeString()}</p>
-                                <p style={{}}>{event.title}</p>
-                            </div>
-                        )
-                    }}
-                    viewerExtraComponent={(fields, event) => {
-                        return (
-                            <div>
-                                <h3>Detajet e Takimit</h3>
-                                <Button disabled={event.approve == 'true'} onClick={() => {
-                                    approveMeeting(event._id)
-                                }}
-                                        style={event.approve != 'true' ? {
-                                            backgroundColor: 'green',
-                                            color: 'white',
-                                            margin: 5
-                                        } : {
-                                            backgroundColor: 'gray', color: 'white', margin: 5
-                                        }}>Prezent</Button>
-                                <Button disabled={event.approve == 'false'} onClick={() => disApproveMeeting(event._id)}
-                                        style={event.approve != 'false' ? {
-                                            backgroundColor: 'red',
-                                            color: 'white',
-                                            margin: 5
-                                        } : {
-                                            backgroundColor: 'gray', color: 'white', margin: 5
-                                        }}>Jo Prezent</Button>
-                                <p><strong>Përshkrimi:</strong> {event.title}</p>
-                                <p><strong>Kompania:</strong> {event.company}</p>
-                                <p><strong>Fillo:</strong> {event.start.toLocaleDateString('en-GB')}</p>
-                                <p><strong>Pjesmarrësit:</strong> {event.names ? event?.names?.join(',') : ""}</p>
-                                <p><strong>Krijuar nga:</strong> {event.createdBy}</p>
-                                {event.editedBy && <p><strong>Edituar nga:</strong> {event.editedBy}</p>}
-                            </div>
-                        );
-                    }}
-                    onEventDrop={async (newDate, newEvent, oldEvent) => {
-                        await updateMeeting({
-                            _id: newEvent._id,
-                            clients: newEvent.clients,
-                            start: newEvent.start,
-                            end: newEvent.end,
-                            color: newEvent.color,
-                            event_id: newEvent.event_id,
-                            title: newEvent.title,
-                            editedBy: localStorage.getItem('gntcuser')
-                        });
-                    }}
-                    onDelete={async (event) => {
-                        await deleteMeeting(event);
-                    }}
-                    translations={{
-                        navigation: {
-                            month: "Muaji",
-                            week: "Java",
-                            day: "Dita",
-                            today: "Sot",
-                            agenda: "Agjenda"
-                        },
-                        form: {
-                            addTitle: "Shto një Takim",
-                            editTitle: "Edito Takimin",
-                            confirm: "Konfirmo",
-                            delete: "Fshij",
-                            cancel: "Anulo"
-                        },
-                        event: {
-                            title: "Titulli",
-                            start: "Fillo",
-                            end: "Përfundo",
-                            allDay: "Gjithë ditën"
-                        },
-                        validation: {
-                            required: "Kërkohet",
-                            invalidEmail: "Email i pavlefshëm",
-                            onlyNumbers: "Vetëm numrat lejohen",
-                            min: "Minimumi {{min}} i shkronjav",
-                            max: "Maksimumi {{max}} i shkronjav"
-                        },
-                        moreEvents: "Më shumë...",
-                        noDataToDisplay: "Nuk ka të dhëna për t'u shfaqur",
-                        loading: "Loading..."
-                    }}
-                />
+                <div style={{
+                    display: 'flex',
+                    gap: 10,
+                    flexDirection: 'column'
+                }}>
+                    {
+                        meetings.map((event, index) => {
+                            return <>
+                                <div onClick={() => {
+                                    if(index===openedEvent) {
+                                        setOpenedEvent(-1)
+                                        return
+                                    }
+                                    setOpenedEvent(index)
+                                }} style={{
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    backgroundColor: event.color,
+                                    borderRadius: 5,
+                                    color: event.color === '#ADD8E6' ? 'black' : 'black',
+                                }}>
+                                    <p style={{
+                                        backgroundColor: event.approve === 'none' ? 'gray' : event.approve === 'true' ? 'green' : 'red',
+                                        fontSize: 12,
+                                        margin: 0,
+                                        padding: 2,
+                                        color: 'white',
+                                        fontWeight: 'bold',
+                                    }}>{event.start.toLocaleTimeString()}</p>
+                                    <p style={{
+                                        paddingLeft: 5
+                                    }}>{event.title}</p>
+                                </div>
+                                {
+                                    openedEvent === index && <div>
+                                        <h3>Detajet e Takimit</h3>
+                                        <Button disabled={event.approve == 'true'} onClick={() => {
+                                            approveMeeting(event._id)
+                                        }}
+                                                style={event.approve != 'true' ? {
+                                                    backgroundColor: 'green',
+                                                    color: 'white',
+                                                    margin: 5
+                                                } : {
+                                                    backgroundColor: 'gray', color: 'white', margin: 5
+                                                }}>Prezent</Button>
+                                        <Button disabled={event.approve == 'false'}
+                                                onClick={() => disApproveMeeting(event._id)}
+                                                style={event.approve != 'false' ? {
+                                                    backgroundColor: 'red',
+                                                    color: 'white',
+                                                    margin: 5
+                                                } : {
+                                                    backgroundColor: 'gray', color: 'white', margin: 5
+                                                }}>Jo Prezent</Button>
+                                        <p><strong>Përshkrimi:</strong> {event.title}</p>
+                                        <p><strong>Kompania:</strong> {event.company}</p>
+                                        <p><strong>Fillo:</strong> {event.start.toLocaleDateString('en-GB')}</p>
+                                        <p><strong>Pjesmarrësit:</strong> {event.names ? event?.names?.join(',') : ""}</p>
+                                        <p><strong>Krijuar nga:</strong> {event.createdBy}</p>
+                                        {event.editedBy && <p><strong>Edituar nga:</strong> {event.editedBy}</p>}
+                                    </div>
+                                }
+                            </>
+                        })
+                    }
+                </div>
             </Container>
         </div>
     )
