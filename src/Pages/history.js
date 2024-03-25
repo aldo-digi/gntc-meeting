@@ -33,7 +33,11 @@ export const History = () => {
     const [users, setUsers] = useState([]);
     const [openedEvent, setOpenedEvent] = useState(-1);
     const [toDate,setToDate] = useState(new Date())
-    const [fromDate,setFromDate] = useState(new Date())
+    const [fromDate, setFromDate] = useState(() => {
+        const date = new Date();
+        date.setHours(0, 0, 0, 0);
+        return date;
+    });
     const [selectedFilter,setSelectedFilter] = useState('All')
     const [search,setSearch] = useState('')
 
@@ -235,11 +239,16 @@ export const History = () => {
                 getCompanies();
     }, [users, meetings])
 
-    useEffect(()=>{
-        setMeetings(meetingsBackup.filter((meeting)=>{
-            return meeting.start >= fromDate && meeting.start <= toDate
-        }))
-    },[fromDate,toDate])
+    useEffect(() => {
+        setMeetings(meetingsBackup.filter((meeting) => {
+            let meetingDate = new Date(meeting.start).getTime();
+            let date1 = new Date(fromDate.toDateString()).getTime();
+            let date2 = new Date(toDate.toDateString()).getTime() + (24 * 60 * 60 * 1000); // Add 1 day in milliseconds
+            console.log(meetingDate, date1, date2);
+            return meetingDate >= date1 && meetingDate <= date2;
+        }));
+    }, [fromDate, toDate]);
+
 
     useEffect(() => {
         setMeetings(meetingsBackup.filter((meeting)=>{
