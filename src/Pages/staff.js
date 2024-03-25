@@ -66,7 +66,9 @@ const Staff = () => {
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
 
-    const handleDeleteClient = (index) => {
+    const handleDeleteClient = (email) => {
+
+        const index = clients.findIndex((client) => client.email === email);
 
         const response = axios.delete(`${process.env.REACT_APP_BACKEND_URL}/clients/delete/${clients[index]._id}`);
 
@@ -74,7 +76,6 @@ const Staff = () => {
         const remaianingClients = [...clients];
         // Remove the client at the specified index
         remaianingClients.splice(index, 1);
-        console.log(remaianingClients)
         // Update the clients array in the context
         deleteClients(index);
     };
@@ -265,7 +266,7 @@ const Staff = () => {
                                 <TableCell>
                                    
                                     <EditIcon onClick={()=>handleEditClient(index)} style={{cursor:'pointer'}}/>
-                                    <DeleteIcon color='error' onClick={()=>handleDeleteClient(index)} style={{cursor:'pointer'}}/>
+                                    <DeleteIcon color='error' onClick={()=>handleDeleteClient(row.email)} style={{cursor:'pointer'}}/>
                                             </TableCell>
                             </TableRow>
 

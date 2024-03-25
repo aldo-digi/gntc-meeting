@@ -74,7 +74,9 @@ export const Calendar = () => {
             const names = []
             for(var j=0; j<meetings[i].clients.length; j++){
                 const user = users.find((user) => user.email === meetings[i].clients[j])
-                names.push(user.name)
+                if(user.name){
+                    names.push(user.name)
+                }
             }
             const company =  user.company;
             meetingsBackup[i].company = company;
