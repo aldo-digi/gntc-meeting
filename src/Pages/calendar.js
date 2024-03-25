@@ -262,6 +262,7 @@ export const Calendar = () => {
                                 flexDirection: 'column',
                                 backgroundColor: event.color,
                                 borderRadius: 5,
+                                margin:1,
                                 color: event.color === '#ADD8E6' ? 'black' : 'black',
                             }} {...props}>
                                 <p style={{
