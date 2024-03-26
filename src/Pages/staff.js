@@ -67,7 +67,8 @@ const Staff = () => {
 
 
     const handleDeleteClient = (email) => {
-
+        const confirmation = window.confirm(`Are you sure you wish to delete ${email}?`);
+        if(!confirmation) return;
         const index = clients.findIndex((client) => client.email === email);
 
         const response = axios.delete(`${process.env.REACT_APP_BACKEND_URL}/clients/delete/${clients[index]._id}`);

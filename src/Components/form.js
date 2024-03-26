@@ -120,11 +120,7 @@ export const Form = ({ scheduler, updateMeeting }) => {
                     const { randomUUID } = new ShortUniqueId({ length: 10 });
                     const company = await getCompany(selectedEmails[0]);
                     let color = '';
-                    if(company === 'GNTC Group') {
                         color = '#FEDD1F'
-                    }else {
-                        color = '#ADD8E6'
-                    }
                     const start = formData.start ? new Date(formData.start) : null;
                     const end = new Date(start);
                     end.setHours(end.getHours() + 1);
