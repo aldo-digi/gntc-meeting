@@ -42,7 +42,7 @@ export const History = () => {
     const [search,setSearch] = useState('')
 
     const getMeetings = async () => {
-        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/meetings/get`);
+        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/meetings/getHistory`);
         const data = await response.json();
 
         const meetings = []

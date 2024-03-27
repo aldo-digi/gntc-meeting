@@ -231,6 +231,13 @@ export const Calendar = () => {
                 getCompanies();
     },[users,meetings])
 
+    const sendEmail = async (id) => {
+        const response = await axios.put(`${process.env.REACT_APP_BACKEND_URL}/meetings/sendEmail`, {id});
+        if (response.status === 200) {
+            toast.success('Emails sent successfully!', { variant: "success" });
+        }
+    }
+
     return (
         <div style={!isMobile ? {
             marginLeft: 250,
@@ -322,6 +329,12 @@ export const Calendar = () => {
                                         } : {
                                             backgroundColor: 'gray', color: 'white', margin: 5
                                         }}>Jo Prezent</Button>
+                                <Button onClick={() => sendEmail(event._id)}
+                                        style={{
+                                            backgroundColor: 'yellow',
+                                            color: 'black',
+                                            margin: 5
+                                        }}>Send Emails</Button>
                                 <p><strong>Përshkrimi:</strong> {event.title}</p>
                                 <p><strong>Kompania:</strong> {event.company}</p>
                                 <p><strong>Fillo:</strong> {event.start.toLocaleDateString('en-GB')}</p>

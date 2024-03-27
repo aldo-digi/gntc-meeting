@@ -120,7 +120,7 @@ export const Form = ({ scheduler, updateMeeting }) => {
                     const { randomUUID } = new ShortUniqueId({ length: 10 });
                     const company = await getCompany(selectedEmails[0]);
                     let color = '';
-                        color = '#FEDD1F'
+                        color = '#FFF2CC'
                     const start = formData.start ? new Date(formData.start) : null;
                     const end = new Date(start);
                     end.setHours(end.getHours() + 1);
