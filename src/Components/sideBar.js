@@ -71,7 +71,7 @@ export const SideBar = ({ open, setOpen }) => {
                         key='clients'
                         sx={{
                             mb: 2,
-                            borderRadius: 20,
+                            borderRadius: 0,
                             '&:hover': {
                                 backgroundColor: '#00cc00',
                             },
@@ -90,7 +90,7 @@ export const SideBar = ({ open, setOpen }) => {
                         key='history'
                         sx={{
                             mb: 2,
-                            borderRadius: 20,
+                            borderRadius: 0,
                             '&:hover': {
                                 backgroundColor: '#00cc00',
                             },
@@ -110,7 +110,7 @@ export const SideBar = ({ open, setOpen }) => {
                 <List sx={{ marginTop: 'auto' }}>
                     <ListItem
                         key="user"
-                        sx={{ borderRadius: 20 }}
+                        sx={{ borderRadius: 0 }}
                     >
                         <ListItemIcon>
                             <PersonIcon />
@@ -124,7 +124,7 @@ export const SideBar = ({ open, setOpen }) => {
                         button
                         key="logout"
                         onClick={handleLogout}
-                        sx={{ borderRadius: 20 }}
+                        sx={{ borderRadius: 0 }}
                     >
                         <ListItemIcon>
                             <ExitToAppIcon />
