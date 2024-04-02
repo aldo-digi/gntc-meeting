@@ -154,9 +154,23 @@ export const Form = ({ scheduler, updateMeeting }) => {
                     }
 
 
-                    scheduler.onConfirm(newEvent, event ? "edit" : "create");
+                    const names = []
+                    for(let j=0; j<newEvent.clients.length; j++){
+                        const user = users.find((user) => user.email === newEvent.clients[j])
+                        if(user){
+                            names.push(user.name)
+                        }
+                    }
+
+                    scheduler.onConfirm({
+                        ...newEvent,
+                        names: names,
+                    }, event ? "edit" : "create");
+                    if(event) {
+                        window.location.reload();
+                    }
                     scheduler.close();
-                    window.location.reload();
+
                 }}>Ruaj</Button>
             </div>
 

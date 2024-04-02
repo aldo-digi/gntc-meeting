@@ -1,14 +1,13 @@
 import {Scheduler} from "@aldabil/react-scheduler";
 import {Form} from "../Components/form";
-import {Button, Container, IconButton, useMediaQuery, useTheme} from "@mui/material";
+import {Button, Container, IconButton, tooltipClasses, useMediaQuery, useTheme} from "@mui/material";
 import {SideBar} from "../Components/sideBar";
 import {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
-import BlobIcon from '../Assets/blob.png'
-import {useClient} from '../Components/ClientContext';
 import axios from "axios";
 import MenuIcon from "@mui/icons-material/Menu";
 import {toast} from "react-toastify";
+import Tooltip from '@mui/material/Tooltip';
 
 export const Calendar = () => {
 
@@ -286,7 +285,8 @@ export const Calendar = () => {
                     }}
                     eventRenderer={({event,...props}) => {
                         return (
-                            <div style={{
+                            <Tooltip title={event.title} placement="top" arrow  >
+                            <div   style={{
                                 display: 'flex',
                                 flexDirection: 'column',
                                 backgroundColor: event.color,
@@ -294,6 +294,7 @@ export const Calendar = () => {
                                 margin:1,
                                 color: event.color === '#ADD8E6' ? 'black' : 'black',
                             }} {...props}>
+
                                 <p style={{
                                     backgroundColor: event.approve==='none'?'gray':event.approve==='true'?'green':'red',
                                     fontSize: 12,
@@ -302,9 +303,10 @@ export const Calendar = () => {
                                     color:'white',
                                     fontWeight: 'bold',
                                 }}>{event.start.toLocaleTimeString('en-US',{ hour: '2-digit', minute: '2-digit', hour12: false })}</p>
-                                <p style={{
+                                    <p style={{
                                 }}>{event.title}</p>
                             </div>
+                            </Tooltip>
                         )
                     }}
                     viewerExtraComponent={(fields, event) => {
