@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from "react";
-import { Autocomplete, Button, FormControl, InputLabel, TextField } from "@mui/material";
-import { useClient } from "./ClientContext";
+import React, {useState, useEffect} from "react";
+import {Autocomplete, Button, FormControl, InputLabel, TextField} from "@mui/material";
+import {useClient} from "./ClientContext";
 import ShortUniqueId from "short-unique-id";
 import randomColor from 'randomcolor';
 import axios from "axios";
 import {toast} from "react-toastify";
 
-export const Form = ({ scheduler, updateMeeting }) => {
+export const Form = ({scheduler, updateMeeting}) => {
     const [users, setUsers] = useState([]);
 
     const getClients = async () => {
@@ -19,11 +19,11 @@ export const Form = ({ scheduler, updateMeeting }) => {
     }, []);
 
     const event = scheduler.edited;
-    const [selectedEmails, setSelectedEmails] = useState(event?event.clients:[]);
+    const [selectedEmails, setSelectedEmails] = useState(event ? event.clients : []);
 
     const [formData, setFormData] = useState({
-        emails: event? event.clients : [],
-        title:event ? event.title : '',
+        emails: event ? event.clients : [],
+        title: event ? event.title : '',
         start: scheduler.state.start.value || '',
         end: scheduler.state.end.value || '',
         date: event ? scheduler.state.start.value.toISOString().split('T')[0] : '',
@@ -31,7 +31,7 @@ export const Form = ({ scheduler, updateMeeting }) => {
     });
 
     const handleChange = (event) => {
-        const { name, value } = event.target;
+        const {name, value} = event.target;
         setFormData(prevState => ({
             ...prevState,
             [name]: value
@@ -53,7 +53,7 @@ export const Form = ({ scheduler, updateMeeting }) => {
             end: newMeeting.end,
             clients: newMeeting.clients,
             color: newMeeting.color,
-            title:newMeeting.title,
+            title: newMeeting.title,
             createdBy: newMeeting.createdBy
         });
     }
@@ -77,7 +77,7 @@ export const Form = ({ scheduler, updateMeeting }) => {
                 name="title"
                 value={formData.title}
                 onChange={handleChange}
-                />
+            />
             <FormControl>
                 <InputLabel id='selectName'></InputLabel>
                 <Autocomplete
@@ -91,7 +91,7 @@ export const Form = ({ scheduler, updateMeeting }) => {
                     id="emails"
                     onChange={(event, newValue) => setSelectedEmails(newValue)}
                     options={users.map((option) => option.email)}
-                    renderInput={(params) => <TextField {...params} label="E-mails" />}
+                    renderInput={(params) => <TextField {...params} label="E-mails"/>}
                 />
             </FormControl>
             <TextField
@@ -117,10 +117,10 @@ export const Form = ({ scheduler, updateMeeting }) => {
             }}>
                 <Button variant="contained" color="error" onClick={scheduler.close}>Cancel</Button>
                 <Button variant="contained" color="primary" onClick={async () => {
-                    const { randomUUID } = new ShortUniqueId({ length: 10 });
+                    const {randomUUID} = new ShortUniqueId({length: 10});
                     const company = await getCompany(selectedEmails[0]);
                     let color = '';
-                        color = '#FFF2CC'
+                    color = '#FFF2CC'
                     const start = formData.start ? new Date(formData.start) : null;
                     const end = new Date(start);
                     end.setHours(end.getHours() + 1);
@@ -133,17 +133,18 @@ export const Form = ({ scheduler, updateMeeting }) => {
                         title: formData.title,
                         clients: selectedEmails,
                         color: color,
-                        approve:'none',
+                        approve: 'none',
                         company: company,
                         createdBy: localStorage.getItem('gntcuser')
                     };
 
 
-                    if(new Date(newEvent.start) < new Date()) {
-                        toast.error('Ju nuk mund të krijojnë një takim përpara datës së sotme');
-                        return;
+                    if (!event) {
+                        if (new Date(newEvent.start) < new Date()) {
+                            toast.error('Ju nuk mund të krijojnë një takim përpara datës së sotme');
+                            return;
+                        }
                     }
-
                     if (!event) {
                         await addMeeting(newEvent)
                     } else {
@@ -155,9 +156,9 @@ export const Form = ({ scheduler, updateMeeting }) => {
 
 
                     const names = []
-                    for(let j=0; j<newEvent.clients.length; j++){
+                    for (let j = 0; j < newEvent.clients.length; j++) {
                         const user = users.find((user) => user.email === newEvent.clients[j])
-                        if(user){
+                        if (user) {
                             names.push(user.name)
                         }
                     }
@@ -166,7 +167,7 @@ export const Form = ({ scheduler, updateMeeting }) => {
                         ...newEvent,
                         names: names,
                     }, event ? "edit" : "create");
-                    if(event) {
+                    if (event) {
                         window.location.reload();
                     }
                     scheduler.close();
