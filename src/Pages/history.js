@@ -274,7 +274,12 @@ export const History = () => {
             <SideBar open={open} setOpen={setOpen}/>
             <Container>
                 <h1>Historia</h1>
-                <div style={{
+                <div style={isMobile?{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: 2,
+                    marginBottom:10
+                }:{
                     display: 'flex',
                     flexDirection: 'row',
                     gap: 10,
@@ -380,7 +385,14 @@ export const History = () => {
                                         return
                                     }
                                     setOpenedEvent(index)
-                                }} style={{
+                                }} style={isMobile?{
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    backgroundColor: event.color,
+                                    borderRadius: 10,
+                                    width: '100%',
+                                    color: event.color === '#ADD8E6' ? 'black' : 'black',
+                                }:{
                                     display: 'flex',
                                     flexDirection: 'column',
                                     backgroundColor: event.color,
