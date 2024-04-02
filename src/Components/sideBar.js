@@ -52,7 +52,7 @@ export const SideBar = ({ open, setOpen }) => {
                         key='kalendari'
                         sx={{
                             mb: 2,
-                            borderRadius: 20,
+                            borderRadius: 0,
                             '&:hover': {
                                 backgroundColor: '#00cc00',
                             },
