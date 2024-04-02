@@ -378,7 +378,7 @@ export const Calendar = () => {
                         },
                         event: {
                             title: "Titulli",
-                            start: "Fillo",
+                            start: "Fillon",
                             end: "Përfundo",
                             allDay: "Gjithë ditën"
                         },
