@@ -56,6 +56,9 @@ export const Form = ({scheduler, updateMeeting}) => {
             title: newMeeting.title,
             createdBy: newMeeting.createdBy
         });
+
+        return response.data._id;
+
     }
 
     const getCompany = async (email) => {
@@ -145,8 +148,11 @@ export const Form = ({scheduler, updateMeeting}) => {
                             return;
                         }
                     }
+
+                    let newEventId = null;
+
                     if (!event) {
-                        await addMeeting(newEvent)
+                       newEventId =  await addMeeting(newEvent)
                     } else {
                         await updateMeeting({
                             ...newEvent,
@@ -165,6 +171,7 @@ export const Form = ({scheduler, updateMeeting}) => {
 
                     scheduler.onConfirm({
                         ...newEvent,
+                        _id: newEventId,
                         names: names,
                     }, event ? "edit" : "create");
                     if (event) {
