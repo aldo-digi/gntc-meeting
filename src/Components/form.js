@@ -142,12 +142,12 @@ export const Form = ({scheduler, updateMeeting}) => {
                     };
 
 
-                    if (!event) {
-                        if (new Date(newEvent.start) < new Date()) {
-                            toast.error('Ju nuk mund të krijojnë një takim përpara datës së sotme');
-                            return;
-                        }
-                    }
+                    // if (!event) {
+                    //     if (new Date(newEvent.start) < new Date()) {
+                    //         toast.error('Ju nuk mund të krijojnë një takim përpara datës së sotme');
+                    //         return;
+                    //     }
+                    // }
 
                     let newEventId = null;
 
