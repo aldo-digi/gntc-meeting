@@ -270,18 +270,19 @@ export const Calendar = () => {
                         startHour: 7,
                         endHour: 24,
                         step: 60,
-                        weekDays: [ 2, 3, 4, 5,6 ,0, 1  ],
+                        weekDays: [ 2, 3, 4, 5,6 ,7,8  ],
                     }}
                     month={{
                         startHour: 7,
                         endHour: 24,
                         step: 60,
-                        weekDays: [ 2, 3, 4, 5,6 ,0, 1  ],
+                        weekDays: [ 2, 3, 4, 5,6 ,7,8  ],
                     }}
                     day={{
                         startHour: 7,
                         endHour: 24,
                         step: 60,
+                        
                     }}
                     eventRenderer={({event,...props}) => {
                         return (
